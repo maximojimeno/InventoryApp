@@ -1,4 +1,5 @@
-﻿using InventaryApp.Shared;
+﻿using InventaryApp.Server.Models;
+using InventaryApp.Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -42,8 +43,10 @@ namespace InventaryApp.Server.Services
                     IsSuccess = false,
                 };
 
-            var identityUser = new IdentityUser
+            var identityUser = new ConfigUser
             {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.Email
             };

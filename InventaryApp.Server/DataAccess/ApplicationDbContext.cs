@@ -8,9 +8,9 @@ using InventaryApp.Server.Models;
 
 namespace InventaryApp.Server.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ConfigUser>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Customers> Customers { get; set; }
     }
