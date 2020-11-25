@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryApp.Server
+namespace InventaryApp.Server
 {
     public class Program
     {

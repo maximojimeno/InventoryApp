@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace InventoryApp.Server.Controllers
+namespace InventaryApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

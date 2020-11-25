@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryApp.Server.Models
+namespace InventaryApp.Server.Models
 {
     public class Customers
     {

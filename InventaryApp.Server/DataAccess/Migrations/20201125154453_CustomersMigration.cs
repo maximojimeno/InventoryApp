@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace InventoryApp.Server.DataAccess.Migrations
+namespace InventaryApp.Server.DataAccess.Migrations
 {
     public partial class CustomersMigration : Migration
     {

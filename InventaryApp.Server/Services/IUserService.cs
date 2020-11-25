@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InventoryApp.Server.Services
+namespace InventaryApp.Server.Services
 {
     public interface IUserService
     {

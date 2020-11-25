@@ -1,9 +1,9 @@
 ﻿using InventaryApp.Shared;
-using InventoryApp.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using InventaryApp.Server.Services;
 
-namespace InventoryApp.Server.Controllers
+namespace InventaryApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
