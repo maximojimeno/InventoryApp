@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventaryApp.Server", "Inve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventaryApp.Shared", "InventaryApp.Shared\InventaryApp.Shared.csproj", "{7C7D92FA-D5E1-4D7F-A66E-44B217ABDA00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventaryApp.Web", "InventaryApp.Web\InventaryApp.Web.csproj", "{1C92101D-4C16-436B-930C-2EE24AE5971A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventaryApp.Web", "InventaryApp.Web\InventaryApp.Web.csproj", "{1C92101D-4C16-436B-930C-2EE24AE5971A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
