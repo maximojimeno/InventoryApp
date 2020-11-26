@@ -79,7 +79,7 @@ namespace InventaryApp.Server.Services
             {
                 return new UserManagerResponse
                 {
-                    Message = "There Invalid Email or  Password",
+                    Message = "There Invalid Email or Password",
                     IsSuccess = false
                 };
             }
@@ -89,29 +89,34 @@ namespace InventaryApp.Server.Services
             {
                 return new UserManagerResponse
                 {
-                    Message = "There Invalid Email or  Password",
+                    Message = "There Invalid Email or Password",
                     IsSuccess = false
                 };
             }
 
             var claims = new[]
             {
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
                 new Claim("Email", model.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim("Id", user.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
+            var expire = DateTime.Now.AddSeconds(3);
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(30),
+                expires: expire,
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 
             string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
             return new UserManagerResponse
             {
-                Message = tokenAsString,
+
+                Token = tokenAsString,
+                UserInfo = claims.ToDictionary(d => d.Type, d => d.Value),
                 ExpireDate = token.ValidTo,
                 IsSuccess = true
             };
