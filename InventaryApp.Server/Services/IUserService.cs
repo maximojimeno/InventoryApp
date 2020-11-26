@@ -20,9 +20,9 @@ namespace InventaryApp.Server.Services
 
     public class UserServices : IUserService
     {
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<ConfigUser> _userManager;
         private IConfiguration _configuration;
-        public UserServices(UserManager<IdentityUser> userManager,IConfiguration configuration)
+        public UserServices(UserManager<ConfigUser> userManager,IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;

@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using InventaryApp.Server.DataAccess;
 using InventaryApp.Server.Services;
+using InventaryApp.Server.Models;
 
 namespace InventaryApp.Server
 {
@@ -34,10 +35,12 @@ namespace InventaryApp.Server
               }
             );
 
-            services.AddIdentity<IdentityUser, IdentityRole>(Options =>
+            services.AddIdentity<ConfigUser, IdentityRole>(Options =>
             {
-                Options.Password.RequireDigit = true;
+                Options.Password.RequireDigit = false;
+                Options.Password.RequireUppercase =true;
                 Options.Password.RequireLowercase = true;
+                Options.Password.RequireNonAlphanumeric = false;
                 Options.Password.RequiredLength = 6;
             }).AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
