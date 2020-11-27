@@ -1,6 +1,8 @@
 ﻿@page "/auth/login"
-
 @layout AuthLayout
+@inject AuthenticationServices authServices
+@inject NavigationManager navigationManager
+
 
 <div class="app-container app-theme-white body-tabs-shadow">
     <EditForm Model="model" OnValidSubmit="LoginUser">
@@ -21,6 +23,10 @@
                                         </h4>
                                     </div>
                                     <form class="">
+                                        @if (!string.IsNullOrWhiteSpace(message))
+                                        {
+                                        <div class="alert alert-danger">@message</div>
+                                        }
                                         <div class="form-row">
                                             <div class="col-md-12">
                                                 <div class="position-relative form-group">
@@ -43,7 +49,7 @@
                                 <div class="modal-footer clearfix">
 
                                     <div class="float-right">
-                                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                                        <button type="submit" class="btn btn-primary btn-lg" >Login</button>
                                     </div>
                                 </div>
                             </div>
@@ -61,11 +67,19 @@
 
     LoginViewModel model = new LoginViewModel();
 
+    string message = string.Empty;
 
-
-    public void LoginUser()
+    public async Task LoginUser()
     {
-        Console.WriteLine(model.Email + ' '  + model.Password);
+        var result = await authServices.LoginUserAsync(model);
+        if (result.IsSuccess)
+        {
+            message = result.Message;
+        }
+        else
+        {
+            message = result.Message;
+        }
     }
 
 }

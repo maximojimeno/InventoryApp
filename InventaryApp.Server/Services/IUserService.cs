@@ -114,7 +114,7 @@ namespace InventaryApp.Server.Services
 
             return new UserManagerResponse
             {
-
+                Message = "Login Succeedfully",
                 Token = tokenAsString,
                 UserInfo = claims.ToDictionary(d => d.Type, d => d.Value),
                 ExpireDate = token.ValidTo,

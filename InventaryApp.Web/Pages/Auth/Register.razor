@@ -1,6 +1,7 @@
 ﻿@page "/auth/register"
-
 @layout AuthLayout
+@inject AuthenticationServices authServices
+@inject NavigationManager navigationManager
 
 
 <EditForm Model="model" OnValidSubmit="RegisterUser">
@@ -17,7 +18,10 @@
                                 <div>Bienvenido</div>
                                 <span>Registrate ahora!</span>
                             </h4>
-
+                            @if (!string.IsNullOrWhiteSpace(message))
+                            {
+                                <div class="alert alert-danger">@message</div>
+                            }
                             <div class="divider row"></div>
                             <div class="form-row">
                                 <div class="col-md-12">
@@ -55,11 +59,11 @@
                             <div class="divider row"></div>
                             <h6 class="mb-0">
                                 Ya tienes una cuenta?
-                                <a href="auth/login" class="text-primary">Login</a> | <a href="javascript:void(0);" class="text-primary">Recuperar Password</a>
+                                <a href="auth/login"  disabled="IsBusy" class="text-primary">Login</a> | <a href="javascript:void(0);" class="text-primary">Recuperar Password</a>
                             </h6>
                         </div>
                         <div class="modal-footer d-block text-center">
-                            <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Crear Cuenta</button>
+                            <button disabled="IsBusy" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Crear Cuenta</button>
                         </div>
                     </div>
                 </div>
@@ -73,12 +77,22 @@
 
     RegisterViewModel model = new RegisterViewModel();
 
+    bool IsBusy = false;
+    string message = string.Empty;
 
-
-    public void RegisterUser()
+    public async Task RegisterUser()
     {
-        Console.WriteLine(model.Email + ' ' + model.FirstName + ' ' + model.LastName);
-        Console.WriteLine(model.Password + ' ' + model.ConfirmPassword);
+        IsBusy = true;
+        var result = await authServices.RegisterUserAsync(model);
+        if (result.IsSuccess)
+        {
+            message = result.Message;
+        }
+        else
+        {
+            message = result.Message;
+        }
+        IsBusy = false;
     }
 
 }
