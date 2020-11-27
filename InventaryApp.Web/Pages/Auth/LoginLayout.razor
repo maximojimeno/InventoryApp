@@ -5,7 +5,7 @@
 <div class="app-container app-theme-white body-tabs-shadow">
     <EditForm Model="model" OnValidSubmit="LoginUser">
         <DataAnnotationsValidator />
-        <ValidationSummary />
+     
         <div class="app-container">
             <div class="h-100 bg-plum-plate bg-animation">
                 <div class="d-flex h-100 justify-content-center align-items-center">
@@ -16,8 +16,8 @@
                                 <div class="modal-body">
                                     <div class="h5 modal-title text-center">
                                         <h4 class="mt-2">
-                                            <div>InventaryApp</div>
-                                            <span>Inicie sesión en su cuenta a continuación</span>
+                                            <div>Inicie sesión en su cuenta a continuación</div>
+                                          
                                         </h4>
                                     </div>
                                     <form class="">
@@ -25,11 +25,13 @@
                                             <div class="col-md-12">
                                                 <div class="position-relative form-group">
                                                     <input name="email" @bind-value="model.Email" id="exampleEmail" placeholder="Email aqui..." type="email" class="form-control">
+                                                    <ValidationMessage For="@(()=> model.Email)" />
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="position-relative form-group">
                                                     <input name="password" @bind-value="model.Password" id="examplePassword" placeholder="Password aqui..." type="password" class="form-control">
+                                                    <ValidationMessage For="@(()=> model.Password)" />
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +65,7 @@
 
     public void LoginUser()
     {
-        Console.WriteLine();
+        Console.WriteLine(model.Email + ' '  + model.Password);
     }
 
 }

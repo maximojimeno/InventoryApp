@@ -3,3 +3,10 @@
     width: 158px;
     background: url(../assets/images/logo.png)no-repeat;
 }
+
+.validation-message {
+    color: red;
+    padding-top: 3px;
+}
+
+
