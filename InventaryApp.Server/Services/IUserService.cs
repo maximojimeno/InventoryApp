@@ -103,7 +103,7 @@ namespace InventaryApp.Server.Services
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
-            var expire = DateTime.Now.AddSeconds(3);
+            var expire = DateTime.Now.AddMonths(1);
 
             var token = new JwtSecurityToken(
                 claims: claims,

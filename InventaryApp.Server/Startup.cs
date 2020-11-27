@@ -12,6 +12,7 @@ using System.Text;
 using InventaryApp.Server.DataAccess;
 using InventaryApp.Server.Services;
 using InventaryApp.Server.Models;
+using System;
 
 namespace InventaryApp.Server
 {
@@ -55,6 +56,8 @@ namespace InventaryApp.Server
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
                     RequireExpirationTime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AuthSettings:Key"])),
                     ValidateIssuerSigningKey = true
