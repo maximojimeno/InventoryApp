@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\InventaryApp.Shared\InventaryApp.Shared.csproj" />
   </ItemGroup>
 
