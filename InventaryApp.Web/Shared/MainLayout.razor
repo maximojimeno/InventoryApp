@@ -1,12 +1,14 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+
+
+<div id ="app-container" class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
     <div class="app-header header-shadow">
         <div class="app-header__logo">
             <div class="logo-src"></div>
             <div class="header__pane ml-auto">
                 <div>
-                    <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                    <button  id="hamburger" type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
                         <span class="hamburger-box">
                             <span class="hamburger-inner"></span>
                         </span>
@@ -16,7 +18,7 @@
         </div>
         <div class="app-header__mobile-menu">
             <div>
-                <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                <button id="hamburger" type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
                     <span class="hamburger-box">
                         <span class="hamburger-inner"></span>
                     </span>
@@ -39,7 +41,7 @@
                         <input type="text" class="search-input" placeholder="Type to search">
                         <button class="search-icon"><span></span></button>
                     </div>
-                    <button class="close"></button>
+                    <button class="search-close close"></button>
                 </div>
 
             </div>
@@ -93,3 +95,4 @@
         </div>
     </div>
 </div>
+
