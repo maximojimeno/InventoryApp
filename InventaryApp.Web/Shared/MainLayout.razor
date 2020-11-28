@@ -56,14 +56,20 @@
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
                                     <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+
                                         <button type="button" tabindex="0" class="dropdown-item">User Account</button>
-                                        <UserStatus />
+                                        <AuthorizeView>
+                                            <button class="dropdown-item" @onclick="Logout">Cerrar Seccion</button>
+                                        </AuthorizeView>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="widget-content-left  ml-3 header-user-info">
                                 <div class="widget-heading">
-                                    @*@context.User.FindFirst("FirstName").Value*@
+                                    <AuthorizeView>
+                                        @context.User.FindFirst("FirstName").Value
+                                    </AuthorizeView>
                                 </div>
                                 <div class="widget-subheading">
                                     Usuario
@@ -94,3 +100,13 @@
         </div>
     </div>
 </div>
+
+
+@code{
+    async Task Logout()
+    {
+        var localStateProvider = (LocalAuthenticationStateProvider)stateProvider;
+        await localStateProvider.LogoutAsync();
+        navigateManage.NavigateTo("/auth/login");
+    }
+}
