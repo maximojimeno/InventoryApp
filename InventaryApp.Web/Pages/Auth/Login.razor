@@ -3,6 +3,8 @@
 @inject AuthenticationServices authServices
 @inject NavigationManager navigationManager
 @inject ILocalStorageService storageServices
+@inject AuthenticationStateProvider stateProvider
+
 
 
 <div class="app-container app-theme-white body-tabs-shadow">
@@ -89,6 +91,8 @@
                 LastName = result.UserInfo["LastName"]
             };
             await storageServices.SetItemAsync("User", userInfo);
+            await stateProvider.GetAuthenticationStateAsync();
+            navigationManager.NavigateTo("/");
         }
         else
         {
