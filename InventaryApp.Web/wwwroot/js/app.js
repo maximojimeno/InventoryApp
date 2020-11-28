@@ -15,6 +15,17 @@ $(document).ready(function () {
       
     });
 
+    //abrir logout
+    $(document).on('click', '#logout', function () {
+        if ($('#log').hasClass('show')) {
+            $('#log').removeClass('show')
+        } else {
+            $('#log').addClass('show')
+
+        }     
+
+    });
+
     //abrir y cerrar menu pc
     $(document).on('click', '#hamburger', function () {
         console.log()
@@ -66,6 +77,14 @@ $(document).ready(function () {
         }
     });
 
+    //menu despegable 
+    $(document).on('click', '#menu-2', function () {
 
+        if ($('#menu-2 .mm-collapse').hasClass('mm-show')) {
+            $('#menu-2 .mm-collapse').removeClass('mm-show');
+        } else {
+            $('#menu-2 .mm-collapse').addClass('mm-show');
+        }
+    });
 });
 

@@ -1,8 +1,15 @@
 ﻿.app-logo-inverse {
-    height: 45px;
-    width: 158px;
-    background: url(../assets/images/logo.png)no-repeat;
+    height: 45px !important;
+    width: 158px !important;
+    background: url(../assets/images/logo.png)no-repeat !important;
 }
+
+.logo-src {
+    height: 45px !important;
+    width: 158px !important;
+    background: url(../assets/images/logo-inverse.png)no-repeat !important;
+}
+
 
 .validation-message {
     color: red;

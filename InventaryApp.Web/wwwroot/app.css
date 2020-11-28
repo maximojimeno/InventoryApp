@@ -10292,13 +10292,13 @@ a, button, .btn {
         display: block;
         line-height: 2.4rem;
         height: 2.4rem;
-        padding: 0 1.5rem 0 45px;
+        padding: 0 1.5rem 0 60px;
         position: relative;
         border-radius: .25rem;
         color: #343a40;
         white-space: nowrap;
         transition: all .2s;
-        margin: .1rem 0
+        margin: .4rem 0
     }
 
         .vertical-nav-menu li a:hover {
@@ -10307,7 +10307,7 @@ a, button, .btn {
         }
 
             .vertical-nav-menu li a:hover i.metismenu-icon {
-                opacity: .6
+                opacity: 1
             }
 
             .vertical-nav-menu li a:hover i.metismenu-state-icon {
@@ -10337,8 +10337,8 @@ a, button, .btn {
         left: 5px;
         top: 50%;
         margin-top: -17px;
-        font-size: 1.5rem;
-        opacity: .3;
+        font-size: 1.7rem;
+        opacity: .4;
         transition: color 300ms
     }
 
@@ -10403,11 +10403,11 @@ a, button, .btn {
     }
 
         .app-sidebar.sidebar-text-light .vertical-nav-menu li a i.metismenu-icon {
-            opacity: .5
+            opacity: 1
         }
 
         .app-sidebar.sidebar-text-light .vertical-nav-menu li a i.metismenu-state-icon {
-            opacity: .5
+            opacity: 1
         }
 
         .app-sidebar.sidebar-text-light .vertical-nav-menu li a:hover {
@@ -10416,7 +10416,7 @@ a, button, .btn {
         }
 
             .app-sidebar.sidebar-text-light .vertical-nav-menu li a:hover i.metismenu-icon {
-                opacity: .8
+                opacity:1
             }
 
             .app-sidebar.sidebar-text-light .vertical-nav-menu li a:hover i.metismenu-state-icon {
@@ -10478,11 +10478,11 @@ a, button, .btn {
     }
 
         .app-sidebar.sidebar-text-dark .vertical-nav-menu li a i.metismenu-icon {
-            opacity: .5
+            opacity: 1
         }
 
         .app-sidebar.sidebar-text-dark .vertical-nav-menu li a i.metismenu-state-icon {
-            opacity: .5
+            opacity: 1
         }
 
         .app-sidebar.sidebar-text-dark .vertical-nav-menu li a:hover {
@@ -10491,7 +10491,7 @@ a, button, .btn {
         }
 
             .app-sidebar.sidebar-text-dark .vertical-nav-menu li a:hover i.metismenu-icon {
-                opacity: .7
+                opacity: 1
             }
 
             .app-sidebar.sidebar-text-dark .vertical-nav-menu li a:hover i.metismenu-state-icon {
