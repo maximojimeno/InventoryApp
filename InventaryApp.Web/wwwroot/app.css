@@ -10325,7 +10325,9 @@ a, button, .btn {
     .vertical-nav-menu li a.mm-active {
         color: #343a40;
         background: #e0f3ff;
-        font-weight: bold
+        font-weight: bold;
+        opacity:1;
+           
     }
 
     .vertical-nav-menu i.metismenu-state-icon, .vertical-nav-menu i.metismenu-icon {

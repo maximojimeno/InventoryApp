@@ -86,5 +86,29 @@ $(document).ready(function () {
             $('#menu-2 .mm-collapse').addClass('mm-show');
         }
     });
+
+    $(document).on('click', '.abrir-2', function () {
+
+        setTimeout(function () { $('#menu-2 .mm-collapse').addClass('mm-show') }, 100);
+          
+        
+    });
+
+    $(document).on('click', '.abrir-1', function () {
+
+        setTimeout(function () { $('#menu-1 .mm-collapse').addClass('mm-show') }, 100);
+
+
+    });
+
+    //dejar selecionado cuando hace click n el menu
+    $('body').on('click', '.metismenu a', function () {
+        $('.mm-active .metismenu-icon').css('opacity', '.4');
+        $('.metismenu a').removeClass('mm-active');
+        $(this).addClass('mm-active');
+       
+        $('.mm-active .metismenu-icon').css('opacity','1');
+    })
+
 });
 
