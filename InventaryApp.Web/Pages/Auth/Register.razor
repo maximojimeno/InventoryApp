@@ -1,7 +1,7 @@
-﻿@page "/auth/register"
-@layout AuthLayout
+﻿@layout AuthLayout
 @inject AuthenticationServices authServices
 @inject NavigationManager navigationManager
+@page "/auth/register"
 
 
 <EditForm Model="model" OnValidSubmit="RegisterUser">
@@ -15,7 +15,7 @@
                         <div class="modal-body">
                             <h5 class="modal-title">
                             </h5><h4 class="mt-2" style="text-align:center">
-                                <div>Bienvenido</div>
+                                            Bienvenido
                                 <span>Registrate ahora!</span>
                             </h4>
                             @if (!string.IsNullOrWhiteSpace(message))
@@ -59,11 +59,11 @@
                             <div class="divider row"></div>
                             <h6 class="mb-0">
                                 Ya tienes una cuenta?
-                                <a href="auth/login"  disabled="IsBusy" class="text-primary">Login</a> | <a href="javascript:void(0);" class="text-primary">Recuperar Password</a>
+                                <button @onclick="ToLogin">Iniciar sesion</button>
                             </h6>
                         </div>
                         <div class="modal-footer d-block text-center">
-                            <button disabled="IsBusy" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Crear Cuenta</button>
+                            <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">Crear Cuenta</button>
                         </div>
                     </div>
                 </div>
@@ -77,12 +77,10 @@
 
     RegisterViewModel model = new RegisterViewModel();
 
-    bool IsBusy = false;
     string message = string.Empty;
 
     public async Task RegisterUser()
     {
-        IsBusy = true;
         var result = await authServices.RegisterUserAsync(model);
         if (result.IsSuccess)
         {
@@ -92,7 +90,10 @@
         {
             message = result.Message;
         }
-        IsBusy = false;
     }
 
+    void ToLogin()
+    {
+        navigationManager.NavigateTo("/auth/login");
+    }
 }

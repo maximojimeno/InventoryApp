@@ -2,6 +2,7 @@
 @layout AuthLayout
 @inject AuthenticationServices authServices
 @inject NavigationManager navigationManager
+@inject ILocalStorageService storageServices
 
 
 <div class="app-container app-theme-white body-tabs-shadow">
@@ -17,15 +18,14 @@
                             <div class="modal-content">
                                 <div class="modal-body">
                                     <div class="h5 modal-title text-center">
-                                        <h4 class="mt-2">
-                                            <div>Inicie sesión en su cuenta a continuación</div>
-                                          
+                                        <h4 class="mt-2"> 
+                                            Inicie sesión en su cuenta a continuación
                                         </h4>
                                     </div>
                                     <form class="">
                                         @if (!string.IsNullOrWhiteSpace(message))
                                         {
-                                        <div class="alert alert-danger">@message</div>
+                                            <div class="alert alert-danger">@message</div>
                                         }
                                         <div class="form-row">
                                             <div class="col-md-12">
@@ -44,7 +44,10 @@
 
                                     </form>
                                     <div class="divider"></div>
-                                    <h6 class="mb-0"> ¿No tienes cuenta? <a href="auth/register" class="text-primary">Regístrate ahora</a></h6>
+                                    <h6 class="mb-0">
+                                        No tienes una cuenta?
+                                        <button @onclick="ToRegister">Registrar Cuenta</button>
+                                    </h6>
                                 </div>
                                 <div class="modal-footer clearfix">
 
@@ -69,17 +72,34 @@
 
     string message = string.Empty;
 
+
     public async Task LoginUser()
     {
         var result = await authServices.LoginUserAsync(model);
         if (result.IsSuccess)
         {
             message = result.Message;
+
+            var userInfo = new InventaryApp.Web.Models.LocalUserInfo()
+            {
+                Id = result.UserInfo["Id"],
+                Token = result.Token,
+                Email = result.UserInfo["Email"],
+                FirstName = result.UserInfo["FirstName"],
+                LastName = result.UserInfo["LastName"]
+            };
+            await storageServices.SetItemAsync("User", userInfo);
         }
         else
         {
             message = result.Message;
         }
     }
+
+    void ToRegister()
+    {
+        navigationManager.NavigateTo("/auth/Register");
+    }
+
 
 }

@@ -1,20 +1,25 @@
 ﻿@page "/"
 
 
+<AuthorizeView>
+    <Authorized>
+        <h1> Bienvenido a Inventary App @context.User.FindFirst("FirstName").Value</h1>
 
-<h1>Counter</h1>
+        <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+        <p>Current count: @currentCount</p>
 
-<button id="counterClick" class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+        <button id="counterClick" class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    </Authorized>
 
-@code {
-    private int currentCount = 0;
+</AuthorizeView>
+    @code {
+        private int currentCount = 0;
 
-    
 
-    private void IncrementCount()
-    {
-        currentCount++;
+
+        private void IncrementCount()
+        {
+            currentCount++;
+        }
     }
-}
