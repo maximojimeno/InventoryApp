@@ -1,9 +1,15 @@
 ﻿@inject AuthenticationStateProvider stateProvider
+@inject NavigationManager navigateManage
 
 <AuthorizeView>
-    <span> bienvenido @context.User.FindFirst("FirstName").Value</span> <button>Cerrar Seccion</button>
+  <button class="dropdown-item" @onclick="Logout">Cerrar Seccion</button>
 </AuthorizeView>
 
 @code{
-   
+   async Task Logout()
+    {
+        var localStateProvider = (LocalAuthenticationStateProvider)stateProvider;
+        await localStateProvider.LogoutAsync();
+        navigateManage.NavigateTo("/auth/login");
+    }
 }
