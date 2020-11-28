@@ -1,0 +1,9 @@
+﻿@inject AuthenticationStateProvider stateProvider
+
+<AuthorizeView>
+    <span> bienvenido @context.User.FindFirst("FirstName").Value</span> <button>Cerrar Seccion</button>
+</AuthorizeView>
+
+@code{
+   
+}

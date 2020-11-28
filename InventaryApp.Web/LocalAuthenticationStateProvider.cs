@@ -38,5 +38,12 @@ namespace InventaryApp.Web
 
             return new AuthenticationState(new ClaimsPrincipal());
         }
+
+        public async Task LogoutAsync()
+        {
+            await _storeService.RemoveItemAsync("User");
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal())));
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal())));
+        }
     }
 }

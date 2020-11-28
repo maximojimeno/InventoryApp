@@ -84,11 +84,14 @@
         var result = await authServices.RegisterUserAsync(model);
         if (result.IsSuccess)
         {
-            message = result.Message;
+            navigationManager.NavigateTo("auth/login");
         }
         else
         {
-            message = result.Message;
+            foreach (var item in result.Errors)
+            {
+                message = item;
+            }
         }
     }
 
