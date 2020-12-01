@@ -12,6 +12,6 @@ namespace InventaryApp.Server.DataAccess
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Customers> Customers { get; set; }
+        
     }
 }
