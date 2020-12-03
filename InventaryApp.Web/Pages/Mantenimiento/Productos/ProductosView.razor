@@ -1,0 +1,224 @@
+﻿@page "/mantenimiento/productos"
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+                <div>
+                    Productos
+                    <div class="page-title-subheading">Lista de todos los productos.</div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" id="btnProducto" data-toggle="modal" data-target=".modal-lg" @onclick="@(e =>AsignarTituloModal("Crear Productos"))">
+                    <i class="fas fa-plus"></i>Agregar Productos
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="dataTables_length" id="example_length">
+                            <label>
+                                Show <select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> entries
+                            </label>
+                        </div>
+                    </div>
+               
+                    <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-right:0px !important;">
+                                <select class="mb-2 form-control">
+                                    <option>Nombre</option>
+                                    <option>Categoria</option>
+                                    <option>Codigo</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-6"  style="padding-left: 0px !important;">
+                                <input type="text" class="form-control" placeholder="Buscar...">
+
+                            </div>
+                            <div class="col-md-3">
+                                <button class="mb-2 mr-2 btn-icon btn btn-primary"><i class="fas fa-search"></i>Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><div class="row">
+                    <div class="col-sm-12">
+                        <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
+                            <thead>
+                                <tr role="row">
+                                <th class="sorting_asc" colspan="1" style="width: 121.2px;" >Name</th>
+                                <th class="sorting"  colspan="1" style="width: 193.2px;" >Position</th>
+                                <th class="sorting" colspan="1" style="width: 84.2px;">Office</th>
+                                <th class="sorting"  colspan="1" style="width: 41.2px;" >Age</th>
+                                <th class="sorting" colspan="1" style="width: 89.2px;">Start date</th>
+                                <th class="sorting"colspan="1" style="width: 65.2px;" >Salary</th></tr>
+                            </thead>
+                            <tbody>
+
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Airi Satou</td>
+                                    <td>Accountant</td>
+                                    <td>Tokyo</td>
+                                    <td>33</td>
+                                    <td>2008/11/28</td>
+                                    <td>$162,700</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Angelica Ramos</td>
+                                    <td>Chief Executive Officer (CEO)</td>
+                                    <td>London</td>
+                                    <td>47</td>
+                                    <td>2009/10/09</td>
+                                    <td>$1,200,000</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Ashton Cox</td>
+                                    <td>Junior Technical Author</td>
+                                    <td>San Francisco</td>
+                                    <td>66</td>
+                                    <td>2009/01/12</td>
+                                    <td>$86,000</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Bradley Greer</td>
+                                    <td>Software Engineer</td>
+                                    <td>London</td>
+                                    <td>41</td>
+                                    <td>2012/10/13</td>
+                                    <td>$132,000</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Brenden Wagner</td>
+                                    <td>Software Engineer</td>
+                                    <td>San Francisco</td>
+                                    <td>28</td>
+                                    <td>2011/06/07</td>
+                                    <td>$206,850</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Brielle Williamson</td>
+                                    <td>Integration Specialist</td>
+                                    <td>New York</td>
+                                    <td>61</td>
+                                    <td>2012/12/02</td>
+                                    <td>$372,000</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Bruno Nash</td>
+                                    <td>Software Engineer</td>
+                                    <td>London</td>
+                                    <td>38</td>
+                                    <td>2011/05/03</td>
+                                    <td>$163,500</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Caesar Vance</td>
+                                    <td>Pre-Sales Support</td>
+                                    <td>New York</td>
+                                    <td>21</td>
+                                    <td>2011/12/12</td>
+                                    <td>$106,450</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Cara Stevens</td>
+                                    <td>Sales Assistant</td>
+                                    <td>New York</td>
+                                    <td>46</td>
+                                    <td>2011/12/06</td>
+                                    <td>$145,600</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1 dtr-control" tabindex="0">Cedric Kelly</td>
+                                    <td>Senior Javascript Developer</td>
+                                    <td>Edinburgh</td>
+                                    <td>22</td>
+                                    <td>2012/03/29</td>
+                                    <td>$433,060</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr><th rowspan="1" colspan="1">Name</th><th rowspan="1" colspan="1">Position</th><th rowspan="1" colspan="1">Office</th><th rowspan="1" colspan="1">Age</th><th rowspan="1" colspan="1">Start date</th><th rowspan="1" colspan="1">Salary</th></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
+                            Showing 1 to 10 of 57 entries
+                        </div>
+                    </div>
+                <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate" style=" float: right;">
+                        <ul class="pagination">
+                            <li class="paginate_button page-item previous disabled" id="example_previous">
+                                <a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                            </li>
+                            <li class="paginate_button page-item active">
+                                <a href="#" aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                             </li>
+                            <li class="paginate_button page-item ">
+                                <a href="#" aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                            </li>
+                            <li class="paginate_button page-item ">
+                                <a href="#" aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                            </li>
+                            <li class="paginate_button page-item ">
+                                <a href="#" aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                            </li>
+                             <li class="paginate_button page-item next" id="example_next">
+                                <a href="#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                            </li>
+                        </ul>
+                     </div>
+                 </div>
+             </div>
+            </div>
+        </div>
+
+    </div>
+
+@*Crear y editar productos*@
+    <div class="modal fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">@TitleModal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @code {
+        private string TitleModal;
+      
+
+        private void AsignarTituloModal(String titulo)
+        {
+            TitleModal = titulo;
+            
+        }
+
+    }
