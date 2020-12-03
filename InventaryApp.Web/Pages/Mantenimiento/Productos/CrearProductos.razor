@@ -15,18 +15,19 @@
 
 <div class="main-card mb-3 card">
     <div class="card-body">
-        <form class="">
+        <EditForm Model="@producto" OnValidSubmit="@SaveProduct">
+            <DataAnnotationsValidator />
             <div class="form-row">
                 <div class="col-md-6">
                     <div class="position-relative form-group">
                         <label for="exampleEmail11" class="">Nombre</label>
-                        <input name="nombre" placeholder="Nombre productos" type="text" class="form-control">
+                        <InputText class="form-control" placeholder="Nombre productos" @bind-Value="producto.Name" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="position-relative form-group">
                         <label for="examplePassword11" class="">Codigo</label>
-                        <input placeholder="Codigo producto" type="text" class="form-control">
+                        <InputText class="form-control" placeholder="Codigo del producto" @bind-Value="producto.Code" />
                     </div>
                 </div>
             </div>
@@ -34,48 +35,74 @@
                 <div class="col-md-6">
                     <div class="position-relative form-group">
                         <label for="exampleAddress" class="">Categoria</label>
-                        <input name="address" id="exampleAddress" placeholder="1234 Main St" type="text" class="form-control">
+                        <InputSelect @bind-Value="producto.Category" class="form-control">
+                            @* @foreach (var cat in ListCategory){
+                            <option value="@cat.Id">@cat.Name</option>
+                        }*@
+                        </InputSelect>
                     </div>
                 </div>
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="exampleAddress2" class="">Marcas</label>
-                            <input name="address2" id="exampleAddress2" placeholder="Apartment, studio, or floor" type="text" class="form-control">
-                        </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleAddress2" class="">Marcas</label>
+                        <InputSelect @bind-Value="producto.Brand" class="form-control">
+                            @*  @foreach (var cat in ListBrand){
+                          <option value="@cat.Id">@cat.Name</option>
+                        }*@
+                        </InputSelect>
                     </div>
                 </div>
-           
+            </div>
+
 
             <div class="form-row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="position-relative form-group">
                         <label for="exampleCity" class="">Precio Costo</label>
-                        <input name="city" id="exampleCity" type="text" class="form-control">
+                        <InputNumber class="form-control" placeholder="Precio compra" @bind-Value="producto.Cost" />
+
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleCity" class="">Precio Costo</label>
+                        <InputNumber class="form-control" placeholder="Precio venta" @bind-Value="producto.Price" />
+
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="position-relative form-group">
                         <label for="exampleState" class="">Especificacion</label>
-                        <input name="state" id="exampleState" type="text" class="form-control">
+                        <InputSelect @bind-Value="producto.Description" class="form-control">
+                            @foreach (var desc in Description)
+                            {
+                                <option value="@desc">@desc</option>
+                            }
+                        </InputSelect>
                     </div>
                 </div>
 
             </div>
-            <div class="position-relative form-check">
-                <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
-                <label for="exampleCheck" class="form-check-label">Check me out</label>
-            </div>
+            
+            <button class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
             <button class="mt-2 btn btn-danger" style=" float: right;">Limpiar</button>
-            <button class="mt-2 btn btn-primary" style=" float: right;">Guardar</button>
-        </form>
+        </EditForm>
 
-    </div>
+        </div>
 
-</div>
+        </div>
 
 
-@code {
-   
-    
+        @code {
+            private ProductViewModel producto = new ProductViewModel();
 
-}
+            private  List<CategoryViewModel> ListCategory;
+            private List<BrandViewModel> ListBrand;
+            private String[] Description = {"Unidades","Libras","Cajas"};
+
+            private void SaveProduct()
+            {
+
+            }
+
+        }
