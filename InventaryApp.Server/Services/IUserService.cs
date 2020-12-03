@@ -99,7 +99,7 @@ namespace InventaryApp.Server.Services
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
                 new Claim("Email", model.Email),
-                new Claim("Id", user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));

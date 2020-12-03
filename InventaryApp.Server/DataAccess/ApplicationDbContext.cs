@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InventaryApp.Server.Models;
+using InventaryApp.Server.Entities;
 
 namespace InventaryApp.Server.DataAccess
 {
@@ -12,6 +13,6 @@ namespace InventaryApp.Server.DataAccess
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        
+        public DbSet<Product> products { get; set; }
     }
 }

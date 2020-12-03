@@ -17,6 +17,8 @@ namespace InventaryApp.Server.Controllers
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(200, Type = typeof(UserManagerResponse))]
+        [ProducesResponseType(400, Type = typeof(UserManagerResponse))]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -25,7 +27,7 @@ namespace InventaryApp.Server.Controllers
                 if (result.IsSuccess)
                     return Ok(result); // Status Code: 200
 
-                return BadRequest(result); // Status Code: 200
+                return BadRequest(result); // Status Code: 400
             }
 
             return BadRequest("Some properties are not valid"); //Status Code: 400
