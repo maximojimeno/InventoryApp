@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Modal;
 using InventaryApp.Shared.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -15,12 +16,12 @@ namespace InventaryApp.Web
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
+           
             builder.Services.AddScoped<AuthenticationServices>(s =>
             {
                 return new AuthenticationServices(URL);
             });
-
+            builder.Services.AddBlazoredModal();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();

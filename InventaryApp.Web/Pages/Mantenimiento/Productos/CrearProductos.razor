@@ -1,5 +1,81 @@
-﻿<h3>CrearProductos</h3>
+﻿@inject IModalService Modal
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+            <div>
+               Crear Productos
+                <div class="page-title-subheading">Creas todos los productos que necesites.</div>
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+
+<div class="main-card mb-3 card">
+    <div class="card-body">
+        <form class="">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Nombre</label>
+                        <input name="nombre" placeholder="Nombre productos" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="examplePassword11" class="">Codigo</label>
+                        <input placeholder="Codigo producto" type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleAddress" class="">Categoria</label>
+                        <input name="address" id="exampleAddress" placeholder="1234 Main St" type="text" class="form-control">
+                    </div>
+                </div>
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="exampleAddress2" class="">Marcas</label>
+                            <input name="address2" id="exampleAddress2" placeholder="Apartment, studio, or floor" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+           
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleCity" class="">Precio Costo</label>
+                        <input name="city" id="exampleCity" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleState" class="">Especificacion</label>
+                        <input name="state" id="exampleState" type="text" class="form-control">
+                    </div>
+                </div>
+
+            </div>
+            <div class="position-relative form-check">
+                <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
+                <label for="exampleCheck" class="form-check-label">Check me out</label>
+            </div>
+            <button class="mt-2 btn btn-danger" style=" float: right;">Limpiar</button>
+            <button class="mt-2 btn btn-primary" style=" float: right;">Guardar</button>
+        </form>
+
+    </div>
+
+</div>
+
 
 @code {
+   
+    
 
 }

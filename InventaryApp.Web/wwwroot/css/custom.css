@@ -15,5 +15,7 @@
     color: red;
     padding-top: 3px;
 }
-
+.blazored-modal {
+    width: 50% !important;
+}
 
