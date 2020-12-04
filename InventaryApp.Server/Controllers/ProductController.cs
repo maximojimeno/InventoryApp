@@ -1,10 +1,13 @@
 ﻿using InventaryApp.Server.Entities;
 using InventaryApp.Server.Services;
 using InventaryApp.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,6 +15,7 @@ namespace InventaryApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   // [Authorize]
     public class ProductController : ControllerBase
     {
 
@@ -26,10 +30,11 @@ namespace InventaryApp.Server.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(Product))]
         [ProducesResponseType(400, Type = typeof(Product))]
-
         public async Task<IActionResult> PostAsync([FromForm] ProductViewModel model)
         {
+            
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var addProduct = await _productService.AddProductAsync(model.Code, model.Name, model.Description, model.Brand, model.Category, model.Cost, model.Price, userId);
 
             if (addProduct != null)

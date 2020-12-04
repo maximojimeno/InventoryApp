@@ -14,7 +14,7 @@ namespace InventaryApp.Server.Controllers
     [ApiController]
     public class SecuredController : ControllerBase
     {
-        [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+     
         [HttpGet]
         public IActionResult result()
         {

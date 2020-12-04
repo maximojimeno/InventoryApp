@@ -1,6 +1,8 @@
 ﻿@page "/mantenimiento/productos"
 @inject IModalService Modal
-@inject IJSRuntime js  
+@inject IJSRuntime js
+@attribute [Authorize]
+
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
@@ -11,7 +13,7 @@
             </div>
         </div>
         <div class="page-title-actions">
-            <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info"  @onclick="@(() => Modal.Show<CrearProductos>("Crear Productos"))">
+            <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" @onclick="@(() => Modal.Show<CrearProductos>("Crear Productos"))">
                 <i class="fas fa-plus"></i>Agregar Productos
             </button>
         </div>
@@ -80,13 +82,13 @@
                                     <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="mb-2 mr-2 btn-icon btn btn-danger"  @onclick="@(() => mostrar())">
+                                    <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
                             </tr>
-                            
-                         
+
+
                         </tbody>
                         <tfoot>
                             <tr><th rowspan="1" colspan="1">Codigo</th><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Categoria</th><th rowspan="1" colspan="1">Descripcion</th><th rowspan="1" colspan="1">Precio</th><th rowspan="1" colspan="1">Opciones</th></tr>
@@ -134,6 +136,12 @@
 @code {
     private string TitleModal;
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+
+
+
+
 
     private void AsignarTituloModal(String titulo)
     {
@@ -141,9 +149,12 @@
 
     }
 
+
+
+
     async Task mostrar()
     {
-        if(await js.Comfirmar("Eliminar", "Esta seguro que desea eliminar", TiposDeAlertas.error))
+        if (await js.Comfirmar("Eliminar", "Esta seguro que desea eliminar", TiposDeAlertas.error))
         {
             await js.MostrarMensajes("Listo", "Producto elimidado", TiposDeAlertas.success);
         }

@@ -17,7 +17,7 @@ namespace InventaryApp.Shared.Services
         }
 
         public string AccessToken
-        {
+            {
             get => client.AccessToken;
             set
             {
@@ -25,11 +25,11 @@ namespace InventaryApp.Shared.Services
             }
         }
 
+
         public async Task<ProductSingleResponse> ProductPostAsync(ProductViewModel model)
         {
-            var cost = model.Cost;
 
-            var response = await client.SendFormAsync<ProductSingleResponse>($"{_baseUrl}/api/product", ActionType.POST,
+            var response = await client.SendFormProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product", ActionType.POST,
                 new StringFormKeyValue("Code", model.Code), new StringFormKeyValue("Name", model.Name), new StringFormKeyValue("Description", model.Description),
                 new StringFormKeyValue("Brand", model.Brand), new StringFormKeyValue("Category", model.Category), new StringFormKeyValue("Cost", model.Cost.ToString()),
                 new StringFormKeyValue("Price", model.Price.ToString()));

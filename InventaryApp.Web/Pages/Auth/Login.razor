@@ -84,8 +84,8 @@
 
             var userInfo = new InventaryApp.Web.Models.LocalUserInfo()
             {
-                Id = result.UserInfo["Id"],
-                Token = result.Token,
+                Id = result.UserInfo[System.Security.Claims.ClaimTypes.NameIdentifier],
+                AccessToken = result.Token,
                 Email = result.UserInfo["Email"],
                 FirstName = result.UserInfo["FirstName"],
                 LastName = result.UserInfo["LastName"]

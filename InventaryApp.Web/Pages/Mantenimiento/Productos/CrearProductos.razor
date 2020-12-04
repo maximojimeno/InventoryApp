@@ -1,6 +1,9 @@
 ﻿@inject IModalService Modal
 @inject ProductServices productService
 @inject IJSRuntime js
+
+@attribute [Authorize]
+
 <EditForm Model="producto" OnValidSubmit="SaveProduct">
     <DataAnnotationsValidator />
 
@@ -47,8 +50,8 @@
                             <option value="" selected>---------- Select----------</option>
                             <option value="1">1</option>
                             @* @foreach (var cat in ListCategory){
-                <option value="@cat.Id">@cat.Name</option>
-            }*@
+                                    <option value="@cat.Id">@cat.Name</option>
+                                }*@
                         </InputSelect>
                         <ValidationMessage For="@(()=>producto.Category)" />
                     </div>
@@ -60,8 +63,8 @@
                             <option value="" selected>---------- Select----------</option>
                             <option value="1">1</option>
                             @*  @foreach (var cat in ListBrand){
-              <option value="@cat.Id">@cat.Name</option>
-            }*@
+                                  <option value="@cat.Id">@cat.Name</option>
+                                }*@
                         </InputSelect>
                         <ValidationMessage For="@(()=>producto.Brand)" />
                     </div>
@@ -111,12 +114,23 @@
 @code {
     private ProductViewModel producto = new ProductViewModel();
 
-    private List<CategoryViewModel> ListCategory;
-    private List<BrandViewModel> ListBrand;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+
+
+    // private List<CategoryViewModel> ListCategory
+    //private List<BrandViewModel> ListBrand;
     private String[] Description = { "Unidades", "Libras", "Cajas" };
 
     public async Task SaveProduct()
+
     {
+        var userState = authenticationState.Result;
+        var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+        productService.AccessToken = AccessToken;
+
         Console.WriteLine("hola mundo");
         var result = await productService.ProductPostAsync(producto);
 

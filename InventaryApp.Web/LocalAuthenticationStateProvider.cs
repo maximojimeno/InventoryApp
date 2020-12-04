@@ -22,11 +22,11 @@ namespace InventaryApp.Web
 
                 var claims = new[]
                 {
-                    new Claim("Id",userInfo.Id),
+                    new Claim(ClaimTypes.NameIdentifier,userInfo.Id),
                     new Claim("Email", userInfo.Email),
                     new Claim("FirstName", userInfo.FirstName),
                     new Claim("LastName", userInfo.LastName),
-                    new Claim("Token", userInfo.Token)
+                    new Claim("AccessToken", userInfo.AccessToken)
                 };
 
                 var identity = new ClaimsIdentity(claims, "BearerToken");
