@@ -1,0 +1,52 @@
+﻿t IModalService Modal
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+            <div>
+                Marcas
+                <div class="page-title-subheading">Creas todas las marcas que necesites.</div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="main-card mb-3 card">
+    <div class="card-body">
+        <EditForm Model="@brand" OnValidSubmit="@SaveBrand">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Nombre</label>
+                        <InputText class="form-control" placeholder="Nombre productos" @bind-Value="brand.Name" />
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <button class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
+            <button class="mt-2 btn btn-danger" style=" float: right;">Limpiar</button>
+        </EditForm>
+
+    </div>
+
+</div>
+
+
+@code {
+    private BrandViewModel brand = new BrandViewModel();
+
+
+
+    private void SaveBrand()
+    {
+
+    }
+
+}

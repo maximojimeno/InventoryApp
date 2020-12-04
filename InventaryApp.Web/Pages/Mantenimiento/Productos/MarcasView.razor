@@ -1,4 +1,4 @@
-﻿@page "/mantenimiento/productos"
+﻿@page "/mantenimiento/marcas"
 @inject IModalService Modal
 @inject IJSRuntime js  
 <div class="app-page-title">
@@ -6,13 +6,13 @@
         <div class="page-title-heading">
             <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
             <div>
-                Productos
-                <div class="page-title-subheading">Lista de todos los productos.</div>
+               Marcas
+                <div class="page-title-subheading">Lista de todas las marcas</div>
             </div>
         </div>
         <div class="page-title-actions">
-            <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info"  @onclick="@(() => Modal.Show<CrearProductos>("Crear Productos"))">
-                <i class="fas fa-plus"></i>Agregar Productos
+            <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info"  @onclick="@(() => Modal.Show<CrearMarcas>("Crear Marcas"))">
+                <i class="fas fa-plus"></i>Agregar Marca
             </button>
         </div>
 
@@ -38,14 +38,7 @@
 
                 <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
                     <div class="row">
-                        <div class="col-md-3" style="padding-right:0px !important;">
-                            <select class="mb-2 form-control">
-                                <option>Nombre</option>
-                                <option>Categoria</option>
-                                <option>Codigo</option>
-                            </select>
-
-                        </div>
+                        
                         <div class="col-md-6" style="padding-left: 0px !important;">
                             <input type="text" class="form-control" placeholder="Buscar...">
 
@@ -60,24 +53,19 @@
                     <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
                         <thead>
                             <tr role="row">
-                                <th class="sorting_asc" colspan="1" style="width: 121.2px;">Codigo</th>
+                                <th class="sorting_asc" colspan="1" style="width: 121.2px;">Id</th>
                                 <th class="sorting" colspan="1" style="width: 193.2px;">Nombre</th>
-                                <th class="sorting" colspan="1" style="width: 84.2px;">Categoria</th>
-                                <th class="sorting" colspan="1" style="width: 41.2px;">Descripcion</th>
-                                <th class="sorting" colspan="1" style="width: 89.2px;">Precio</th>
                                 <th class="sorting" colspan="1" style="width: 65.2px;">Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
 
                             <tr role="row" class="odd">
-                                <td class="sorting_1 dtr-control" tabindex="0">Airi Satou</td>
-                                <td>Accountant</td>
-                                <td>Tokyo</td>
-                                <td>33</td>
-                                <td>2008/11/28</td>
+                                <td>1</td>
+                                <td>Bebidas</td>
+                              
                                 <td>
-                                    <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
+                                    <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearMarcas>("Editar Marca"))">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="mb-2 mr-2 btn-icon btn btn-danger"  @onclick="@(() => mostrar())">
@@ -89,7 +77,7 @@
                          
                         </tbody>
                         <tfoot>
-                            <tr><th rowspan="1" colspan="1">Codigo</th><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Categoria</th><th rowspan="1" colspan="1">Descripcion</th><th rowspan="1" colspan="1">Precio</th><th rowspan="1" colspan="1">Opciones</th></tr>
+                            <tr><th rowspan="1" colspan="1">Id</th><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Opciones</th></tr>
                         </tfoot>
                     </table>
                 </div>
@@ -132,12 +120,12 @@
 
 
 @code {
-    private string TitleModal;
+ 
 
 
     private void AsignarTituloModal(String titulo)
     {
-        TitleModal = titulo;
+     
 
     }
 

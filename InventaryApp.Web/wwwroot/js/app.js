@@ -77,6 +77,16 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('click', '#menu-4', function () {
+
+        if ($('#menu-4 .mm-collapse').hasClass('mm-show')) {
+            $('#menu-4 .mm-collapse').removeClass('mm-show');
+        } else {
+            $('#menu-4 .mm-collapse').addClass('mm-show');
+        }
+    });
+
+
     //menu despegable 
     $(document).on('click', '#menu-2', function () {
 
@@ -92,6 +102,13 @@ $(document).ready(function () {
         setTimeout(function () { $('#menu-2 .mm-collapse').addClass('mm-show') }, 100);
           
         
+    });
+
+    $(document).on('click', '.abrir-4', function () {
+
+        setTimeout(function () { $('#menu-4 .mm-collapse').addClass('mm-show') }, 100);
+
+
     });
 
     $(document).on('click', '.abrir-1', function () {
@@ -113,4 +130,25 @@ $(document).ready(function () {
 
 
 });
+
+    function customComfirm(titulo, mensaje, tipo) {
+        return new Promise((resolve) => {
+            Swal.fire({
+                title: titulo,
+                text: mensaje,
+                icon: tipo,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            })
+        });
+
+    }
 
