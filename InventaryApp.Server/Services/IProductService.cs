@@ -24,15 +24,15 @@ namespace InventaryApp.Server.Services
         }
 
 
-        public async Task<Product> AddProductAsync(string code, string name, string description, string brand, string category, decimal cost, decimal price, string userId)
+        public async Task<Product> AddProductAsync(string code, string name, string description, string brandId, string categoryId, decimal cost, decimal price, string userId)
         {
             var product = new Product
             {
                 Code = code,
                 Name = name,
                 Description = description,
-                Brand = brand,
-                Category = category,
+                BrandId = brandId,
+                CategoryId = categoryId,
                 Cost = cost,
                 Price = price,
                 UserId = userId
@@ -42,5 +42,14 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return product;
         }
+
+        public IEnumerable<Product> GetAllProductAsync(int pageSize, int pageNumber, string userId, out int totalProduct)
+        {
+            var allProducts = _dbContext.products.Where(p => !p.Status && p.UserId == userId);
+                totalProduct = allProducts.Count();
+            var product = allProducts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
+            return product;
+        }
+
     }
 }

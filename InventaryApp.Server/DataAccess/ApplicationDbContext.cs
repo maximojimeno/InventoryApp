@@ -14,5 +14,9 @@ namespace InventaryApp.Server.DataAccess
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Product> products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Brand> brands { get; set; }
     }
+
+
 }

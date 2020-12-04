@@ -1,7 +1,6 @@
 ﻿using InventaryApp.Server.Models;
 using System.ComponentModel.DataAnnotations;
-
-#nullable disable
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventaryApp.Server.Entities
 {
@@ -17,14 +16,16 @@ namespace InventaryApp.Server.Entities
         [StringLength(50)]
         public string Description { get; set; }
         [Required]
-        [StringLength(20)]
-        public string Brand { get; set; }
+        public virtual Brand Brand { get; set; }
         [Required]
-        [StringLength(20)]
-        public string Category { get; set; }
+        public virtual Category Category { get; set; }
         [Required]
         public decimal Cost { get; set; }
         [Required]
         public decimal Price { get; set; }
+        [ForeignKey("Brand")]
+        public string BrandId { get; set; }
+        [ForeignKey("Category")]
+        public string CategoryId { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace InventaryApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class ProductController : ControllerBase
     {
 
@@ -53,5 +53,8 @@ namespace InventaryApp.Server.Controllers
                 IsSuccess = true
             });
         }
+
+
+       
     }
 }
