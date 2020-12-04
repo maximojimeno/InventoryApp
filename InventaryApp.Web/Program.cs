@@ -21,6 +21,13 @@ namespace InventaryApp.Web
             {
                 return new AuthenticationServices(URL);
             });
+
+            builder.Services.AddScoped<ProductServices>(s =>
+            {
+                return new ProductServices(URL);
+            });
+
+
             builder.Services.AddBlazoredModal();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();

@@ -1,14 +1,17 @@
 ﻿@inject IModalService Modal
+@inject ProductServices productService
+@inject IJSRuntime js
+
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
             <div>
-               Crear Productos
+                Crear Productos
                 <div class="page-title-subheading">Creas todos los productos que necesites.</div>
             </div>
         </div>
-        
+
 
     </div>
 </div>
@@ -36,9 +39,10 @@
                     <div class="position-relative form-group">
                         <label for="exampleAddress" class="">Categoria</label>
                         <InputSelect @bind-Value="producto.Category" class="form-control">
+                            <option value="1">1</option>
                             @* @foreach (var cat in ListCategory){
-                            <option value="@cat.Id">@cat.Name</option>
-                        }*@
+            <option value="@cat.Id">@cat.Name</option>
+        }*@
                         </InputSelect>
                     </div>
                 </div>
@@ -46,9 +50,10 @@
                     <div class="position-relative form-group">
                         <label for="exampleAddress2" class="">Marcas</label>
                         <InputSelect @bind-Value="producto.Brand" class="form-control">
+                            <option value="1">1</option>
                             @*  @foreach (var cat in ListBrand){
-                          <option value="@cat.Id">@cat.Name</option>
-                        }*@
+          <option value="@cat.Id">@cat.Name</option>
+        }*@
                         </InputSelect>
                     </div>
                 </div>
@@ -83,26 +88,35 @@
                 </div>
 
             </div>
-            
-            <button class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
+
+            <button type="submit" class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
             <button class="mt-2 btn btn-danger" style=" float: right;">Limpiar</button>
         </EditForm>
 
-        </div>
+    </div>
 
-        </div>
+</div>
 
 
-        @code {
-            private ProductViewModel producto = new ProductViewModel();
+@code {
+    private ProductViewModel producto = new ProductViewModel();
 
-            private  List<CategoryViewModel> ListCategory;
-            private List<BrandViewModel> ListBrand;
-            private String[] Description = {"Unidades","Libras","Cajas"};
+    private List<CategoryViewModel> ListCategory;
+    private List<BrandViewModel> ListBrand;
+    private String[] Description = { "Unidades", "Libras", "Cajas" };
 
-            private void SaveProduct()
-            {
+    public async Task SaveProduct()
+    {
+        var result = await productService.ProductPostAsync(producto);
 
-            }
-
+        if (result.IsSuccess)
+        {
+            await js.MostrarMensajes("Listo", "Guardo el producto", TiposDeAlertas.success);
         }
+        else
+        {
+            await js.MostrarMensajes("Error", "No se pudo guardar el producto", TiposDeAlertas.error);
+        }
+    }
+
+}
