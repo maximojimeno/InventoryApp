@@ -71,15 +71,15 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<ProductCollectionPagingResponse> GetAllProductByPageAsync(int page = 1)
+        public async Task<ProductCollectionPagingResponse> GetAllProductByPageAsync(int page = 1, int pageSize=10)
         {
-            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product?page={page}");
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product?/PageSize={pageSize}&page={page}");
             return response.Result;
         }
 
-        public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int page = 1)
+        public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int pageSize=10, int page = 1)
         {
-            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/search?query={query}&page={page}");
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/search?query={query}/pageSize={pageSize}&page={page}");
             return response.Result;
         }
 

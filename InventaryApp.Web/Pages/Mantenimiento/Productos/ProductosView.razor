@@ -1,5 +1,5 @@
 ﻿@page "/mantenimiento/productos"
-@page "/mantenimiento/productos/{pageNumber}"
+@page "/mantenimiento/productos/{pageNumber:int}"
 @inject IModalService Modal
 @inject IJSRuntime js
 @inject ProductServices productService
@@ -117,18 +117,23 @@
                             <li class="paginate_button page-item previous disabled" id="example_previous">
                                 <a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                             </li>
-                            <li class="paginate_button page-item active">
-                                <a href="#" aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                            </li>
-                            <li class="paginate_button page-item ">
-                                <a href="#" aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                            </li>
-                            <li class="paginate_button page-item ">
-                                <a href="#" aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                            </li>
-                            <li class="paginate_button page-item ">
-                                <a href="#" aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                            </li>
+                            @for (int i = 1; i <= totalPage; i++)
+                            {
+                                int page = i;
+                                @if (page == PageNumber)
+                                {
+                                    <li class="paginate_button page-item active">
+                                        <button @onclick="async() => await moveToPageAsync(page) " data-dt-idx="1" disabled class="page-link">@i</button>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="paginate_button page-item">
+                                        <button @onclick="async() => await moveToPageAsync(page) " data-dt-idx="1" class="page-link">@i</button>
+                                    </li>
+                                }
+
+                            }
                             <li class="paginate_button page-item next" id="example_next">
                                 <a href="#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
                             </li>
@@ -152,6 +157,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
     List<ProductViewModel> product = new List<ProductViewModel>();
+    int totalPage = 1;
 
     async Task getPorductos()
     {
@@ -161,9 +167,20 @@
         if (PageNumber == null)
             PageNumber = 1;
         var result = await productService.GetAllProductByPageAsync(PageNumber.Value);
+
+        if (result.Count % result.PageSize == 0)
+            totalPage = result.Count / result.PageSize;
+        else
+            totalPage = (result.Count / result.PageSize) + 1;
         product = result.Records.ToList();
 
         isBusy = false;
+    }
+
+    async Task moveToPageAsync(int pageNumber)
+    {
+        PageNumber = pageNumber;
+        await getPorductos();
     }
 
 

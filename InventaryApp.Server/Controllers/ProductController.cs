@@ -17,7 +17,7 @@ namespace InventaryApp.Server.Controllers
 
         private readonly IProductService _productService;
 
-        private const int PAGE_SIZE = 10;
+        private const int PAGE_SIZE = 2;
 
 
         public ProductController(IProductService productService)
@@ -31,18 +31,18 @@ namespace InventaryApp.Server.Controllers
         [ProducesResponseType(400, Type = typeof(Product))]
         public async Task<IActionResult> PostAsync([FromForm] ProductViewModel model)
         {
-            
+
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var addProduct = await _productService.AddProductAsync(model.Code, model.Name, model.Description, model.BrandId, model.CategoryId, model.Cost, model.Price, userId);
 
             if (addProduct != null)
             {
-                return Ok(new OperationResponse<Product> { 
+                return Ok(new OperationResponse<Product> {
                     IsSuccess = true,
                     Message = $"{addProduct.Name} has been added successfully!",
                     Record = addProduct
-             
+
                 });
 
             }
@@ -55,20 +55,20 @@ namespace InventaryApp.Server.Controllers
 
 
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Product>))]
-        [HttpGet]
-        public IActionResult Get(int page)
+        [HttpGet("pageSize={pageSize}")]
+        public IActionResult Get(int page, int pageSize)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             int totalProducts = 0;
             if (page == 0)
                 page = 1;
-            var products = _productService.GetAllProductAsync(PAGE_SIZE, page, userId, out totalProducts);
+            var products = _productService.GetAllProductAsync(pageSize, page, userId, out totalProducts);
 
             int totalPages = 0;
-            if (totalProducts % PAGE_SIZE == 0)
-                totalPages = totalProducts / PAGE_SIZE;
+            if (totalProducts % pageSize == 0)
+                totalPages = totalProducts / pageSize;
             else
-                totalPages = (totalProducts / PAGE_SIZE) + 1;
+                totalPages = (totalProducts / pageSize) + 1;
 
             return Ok(new CollectionPagingResponse<Product>
             {
@@ -76,7 +76,7 @@ namespace InventaryApp.Server.Controllers
                 IsSuccess = true,
                 Message = "Products received successfully!",
                 OperationDate = DateTime.UtcNow,
-                PageSize = PAGE_SIZE,
+                PageSize = pageSize,
                 Page = page,
                 Records = products
             });
@@ -134,20 +134,20 @@ namespace InventaryApp.Server.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Product>))]
-        [HttpGet("query={query}")]
-        public IActionResult Get(string query, int page)
+        [HttpGet("query={query}/pageSize={pageSize}")]
+        public IActionResult Get(string query, int page, int pageSize)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             int totalProducts = 0;
             if (page == 0)
                 page = 1;
-            var products = _productService.SearchProductAsync(query, PAGE_SIZE, page, userId, out totalProducts);
+            var products = _productService.SearchProductAsync(query, pageSize, page, userId, out totalProducts);
 
             int totalPages = 0;
-            if (totalProducts % PAGE_SIZE == 0)
-                totalPages = totalProducts / PAGE_SIZE;
+            if (totalProducts % pageSize == 0)
+                totalPages = totalProducts / pageSize;
             else
-                totalPages = (totalProducts / PAGE_SIZE) + 1;
+                totalPages = (totalProducts / pageSize) + 1;
 
             return Ok(new CollectionPagingResponse<Product>
             {
@@ -155,7 +155,7 @@ namespace InventaryApp.Server.Controllers
                 IsSuccess = true,
                 Message = $"Product of '{query}' received successfully!",
                 OperationDate = DateTime.UtcNow,
-                PageSize = PAGE_SIZE,
+                PageSize = pageSize,
                 Page = page,
                 Records = products
             });
