@@ -9,8 +9,9 @@ namespace InventaryApp.Server.Services
 {
     public interface IProductService
     {
-        Task<Product> AddProductAsync(string code, string name, string description, string brand, string category, decimal cost, decimal price, string userId);
-    }
+        IEnumerable<Product> GetAllProductAsync(int pageSize, int pageNumber, string userId, out int totalProduct);
+        Task<Product> AddProductAsync(string code, string name, string description, string brandId, string categoryId, decimal cost, decimal price, string userId);
+    }   
 
 
     public class ProductService : IProductService

@@ -36,5 +36,12 @@ namespace InventaryApp.Shared.Services
 
             return response.Result;
         }
+
+        public async Task<ProductCollectionPagingResponse> GetAllPlansByPageAsync(int page = 1)
+        {
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product?page={page}");
+            return response.Result;
+        }
+
     }
 }

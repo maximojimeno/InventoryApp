@@ -21,6 +21,9 @@ namespace InventaryApp.Server.Controllers
 
         private readonly IProductService _productService;
 
+        private const int PAGE_SIZE = 10;
+
+
         public ProductController(IProductService productService)
         {
             _productService = productService;
@@ -55,6 +58,33 @@ namespace InventaryApp.Server.Controllers
         }
 
 
-       
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Product>))]
+        [HttpGet]
+        public IActionResult Get(int page)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            int totalProducts = 0;
+            if (page == 0)
+                page = 1;
+            var products = _productService.GetAllProductAsync(PAGE_SIZE, page, userId, out totalProducts);
+
+            int totalPages = 0;
+            if (totalProducts % PAGE_SIZE == 0)
+                totalPages = totalProducts / PAGE_SIZE;
+            else
+                totalPages = (totalProducts / PAGE_SIZE) + 1;
+
+            return Ok(new CollectionPagingResponse<Product>
+            {
+                Count = totalProducts,
+                IsSuccess = true,
+                Message = "Plans received successfully!",
+                OperationDate = DateTime.UtcNow,
+                PageSize = PAGE_SIZE,
+                Page = page,
+                Records = products
+            });
+        }
+
     }
 }
