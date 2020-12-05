@@ -25,15 +25,48 @@ namespace InventaryApp.Shared.Services
             }
         }
 
+        public async Task<ProductSingleResponse> GetPlanByIdAsync(string id)
+        {
+            var response = await client.GetProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product/{id}");
+            return response.Result;
+        }
 
         public async Task<ProductSingleResponse> ProductPostAsync(ProductViewModel model)
         {
 
             var response = await client.SendFormProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product", ActionType.POST,
-                new StringFormKeyValue("Code", model.Code), new StringFormKeyValue("Name", model.Name), new StringFormKeyValue("Description", model.Description),
-                new StringFormKeyValue("Brand", model.BrandId), new StringFormKeyValue("Category", model.CategoryId), new StringFormKeyValue("Cost", model.Cost.ToString()),
-                new StringFormKeyValue("Price", model.Price.ToString()));
+                new StringFormKeyValue("Code", model.Code), 
+                new StringFormKeyValue("Name", model.Name), 
+                new StringFormKeyValue("Description", model.Description),
+                new StringFormKeyValue("BrandId", model.BrandId),
+                new StringFormKeyValue("CategoryId", model.CategoryId),
+                new StringFormKeyValue("Cost", model.Cost.ToString()),
+                new StringFormKeyValue("Price", model.Price.ToString())
+                );
+            return response.Result;
+        }
 
+        public async Task<ProductSingleResponse> EditProductAsync(ProductViewModel model)
+        {
+            var formKeyValues = new List<FormKeyValue>()
+            {
+                new StringFormKeyValue("Code", model.Code),
+                new StringFormKeyValue("Name", model.Name),
+                new StringFormKeyValue("Description", model.Description),
+                new StringFormKeyValue("BrandId", model.BrandId),
+                new StringFormKeyValue("CategoryId", model.CategoryId),
+                new StringFormKeyValue("Cost", model.Cost.ToString()),
+                new StringFormKeyValue("Price", model.Price.ToString())
+            };
+
+            var response = await client.SendFormProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product", ActionType.PUT, formKeyValues.ToArray());
+
+            return response.Result;
+        }
+
+        public async Task<ProductSingleResponse> DeletePlanAsync(string id)
+        {
+            var response = await client.DeleteProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product/{id}");
             return response.Result;
         }
 
@@ -42,6 +75,15 @@ namespace InventaryApp.Shared.Services
             var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product?page={page}");
             return response.Result;
         }
+
+        public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int page = 1)
+        {
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/search?query={query}&page={page}");
+            return response.Result;
+        }
+
+
+       
 
     }
 }

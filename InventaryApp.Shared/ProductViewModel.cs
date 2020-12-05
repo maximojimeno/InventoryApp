@@ -19,10 +19,8 @@ namespace InventaryApp.Shared
         [StringLength(50)]
         public string Description { get; set; }
         [Required]
-       
         public string BrandId { get; set; }
         [Required]
-        [StringLength(20)]
         public string CategoryId { get; set; }
         [Required]
         public decimal Cost { get; set; }
