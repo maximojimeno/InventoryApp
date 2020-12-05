@@ -50,6 +50,7 @@ namespace InventaryApp.Shared.Services
         {
             var formKeyValues = new List<FormKeyValue>()
             {
+                new StringFormKeyValue("Id", model.Id),
                 new StringFormKeyValue("Code", model.Code),
                 new StringFormKeyValue("Name", model.Name),
                 new StringFormKeyValue("Description", model.Description),
