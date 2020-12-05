@@ -56,11 +56,11 @@ else
 
                             </div>
                             <div class="col-md-6" style="padding-left: 0px !important;">
-                                <input type="text" class="form-control" placeholder="Buscar...">
+                                <input type="text"  @bind="Query" class="form-control" placeholder="Buscar...">
 
                             </div>
                             <div class="col-md-3">
-                                <button class="mb-2 mr-2 btn-icon btn btn-primary"><i class="fas fa-search"></i>Buscar</button>
+                                <button class="mb-2 mr-2 btn-icon btn btn-primary" @onclick="async() => await getProductos()"><i class="fas fa-search"></i>Buscar</button>
                             </div>
                         </div>
                     </div>
@@ -155,6 +155,7 @@ else
     bool isBusy = false;
     [Parameter]
     public int? PageNumber { get; set; }
+    public string Query { get; set; }
 
 
     [CascadingParameter]
@@ -162,15 +163,19 @@ else
     List<ProductViewModel> product = new List<ProductViewModel>();
     int totalPage = 1;
 
-    async Task getPorductos()
+    async Task getProductos()
     {
         isBusy = true;
         var userState = authenticationState.Result;
         productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
         if (PageNumber == null)
             PageNumber = 1;
-        var result = await productService.GetAllProductByPageAsync(PageNumber.Value);
 
+        ProductCollectionPagingResponse result;
+        if (string.IsNullOrWhiteSpace(Query))
+            result = await productService.GetAllProductByPageAsync(PageNumber.Value);
+        else
+            result = await productService.SearchPlansByPageAsync(Query, PageNumber.Value);
         if (result.Count % result.PageSize == 0)
             totalPage = result.Count / result.PageSize;
         else
@@ -183,13 +188,13 @@ else
     async Task moveToPageAsync(int pageNumber)
     {
         PageNumber = pageNumber;
-        await getPorductos();
+        await getProductos();
     }
 
 
     protected override async Task OnInitializedAsync()
     {
-        await getPorductos();
+        await getProductos();
     }
 
 
