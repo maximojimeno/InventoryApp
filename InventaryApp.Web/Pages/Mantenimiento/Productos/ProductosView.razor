@@ -4,148 +4,151 @@
 @inject IJSRuntime js
 @inject ProductServices productService
 @attribute [Authorize]
-    @if(isBusy){
-<h2> Cargando ......</h2>
-    }else{
-<div class="app-page-title">
-    <div class="page-title-wrapper">
-        <div class="page-title-heading">
-            <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
-            <div>
-                Productos
-                <div class="page-title-subheading">Lista de todos los productos.</div>
+@if (isBusy)
+{
+    <h2> Cargando ......</h2>
+}
+else
+{
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+                <div>
+                    Productos
+                    <div class="page-title-subheading">Lista de todos los productos.</div>
+                </div>
             </div>
-        </div>
-        <div class="page-title-actions">
-            <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" @onclick="@(() => Modal.Show<CrearProductos>("Crear Productos"))">
-                <i class="fas fa-plus"></i>Agregar Productos
-            </button>
-        </div>
+            <div class="page-title-actions">
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" @onclick="@(() => Modal.Show<CrearProductos>("Crear Productos"))">
+                    <i class="fas fa-plus"></i>Agregar Productos
+                </button>
+            </div>
 
+        </div>
     </div>
-</div>
 
-<div class="main-card mb-3 card">
-    <div class="card-body">
-        <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
-            <div class="row">
-                <div class="col-sm-12 col-md-4">
-                    <div class="dataTables_length" id="example_length">
-                        <label>
-                            Show <select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select> entries
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
-                    <div class="row">
-                        <div class="col-md-3" style="padding-right:0px !important;">
-                            <select class="mb-2 form-control">
-                                <option>Nombre</option>
-                                <option>Categoria</option>
-                                <option>Codigo</option>
-                            </select>
-
-                        </div>
-                        <div class="col-md-6" style="padding-left: 0px !important;">
-                            <input type="text" class="form-control" placeholder="Buscar...">
-
-                        </div>
-                        <div class="col-md-3">
-                            <button class="mb-2 mr-2 btn-icon btn btn-primary"><i class="fas fa-search"></i>Buscar</button>
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="dataTables_length" id="example_length">
+                            <label>
+                                Show <select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> entries
+                            </label>
                         </div>
                     </div>
-                </div>
-            </div><div class="row">
-                <div class="col-sm-12">
-                    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
-                        <thead>
-                            <tr role="row">
-                                <th class="sorting_asc" colspan="1" style="width: 121.2px;">Codigo</th>
-                                <th class="sorting" colspan="1" style="width: 193.2px;">Nombre</th>
-                                <th class="sorting" colspan="1" style="width: 84.2px;">Categoria</th>
-                                <th class="sorting" colspan="1" style="width: 41.2px;">Descripcion</th>
-                                <th class="sorting" colspan="1" style="width: 89.2px;">Precio</th>
-                                <th class="sorting" colspan="1" style="width: 65.2px;">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var p in product)
-                            {
-                                <tr role="row" class="odd">
 
-                                    <td class="sorting_1 dtr-control" tabindex="0">@p.Code</td>
-                                    <td>@p.Name</td>
-                                    <td>@p.CategoryId</td>
-                                    <td>@p.Description</td>
-                                    <td>@p.Price</td>
-                                    <td>
-                                        <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
+                    <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-right:0px !important;">
+                                <select class="mb-2 form-control">
+                                    <option>Nombre</option>
+                                    <option>Categoria</option>
+                                    <option>Codigo</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px !important;">
+                                <input type="text" class="form-control" placeholder="Buscar...">
+
+                            </div>
+                            <div class="col-md-3">
+                                <button class="mb-2 mr-2 btn-icon btn btn-primary"><i class="fas fa-search"></i>Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><div class="row">
+                    <div class="col-sm-12">
+                        <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" colspan="1" style="width: 121.2px;">Codigo</th>
+                                    <th class="sorting" colspan="1" style="width: 193.2px;">Nombre</th>
+                                    <th class="sorting" colspan="1" style="width: 84.2px;">Categoria</th>
+                                    <th class="sorting" colspan="1" style="width: 41.2px;">Descripcion</th>
+                                    <th class="sorting" colspan="1" style="width: 89.2px;">Precio</th>
+                                    <th class="sorting" colspan="1" style="width: 65.2px;">Opciones</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in product)
+                                {
+                                    <tr role="row" class="odd">
+
+                                        <td class="sorting_1 dtr-control" tabindex="0">@p.Code</td>
+                                        <td>@p.Name</td>
+                                        <td>@p.CategoryId</td>
+                                        <td>@p.Description</td>
+                                        <td>@p.Price</td>
+                                        <td>
+                                            <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
 
 
-                            }
+                                }
 
 
-                        </tbody>
-                        <tfoot>
-                            <tr><th rowspan="1" colspan="1">Codigo</th><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Categoria</th><th rowspan="1" colspan="1">Descripcion</th><th rowspan="1" colspan="1">Precio</th><th rowspan="1" colspan="1">Opciones</th></tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
-                        Showing 1 to 10 of 57 entries
+                            </tbody>
+                            <tfoot>
+                                <tr><th rowspan="1" colspan="1">Codigo</th><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Categoria</th><th rowspan="1" colspan="1">Descripcion</th><th rowspan="1" colspan="1">Precio</th><th rowspan="1" colspan="1">Opciones</th></tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate" style=" float: right;">
-                        <ul class="pagination">
-                            <li class="paginate_button page-item previous disabled" id="example_previous">
-                                <a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                            </li>
-                            @for (int i = 1; i <= totalPage; i++)
-                            {
-                                int page = i;
-                                @if (page == PageNumber)
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
+                            Showing 1 to 10 of 57 entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="example_paginate" style=" float: right;">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous disabled" id="example_previous">
+                                    <a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                </li>
+                                @for (int i = 1; i <= totalPage; i++)
                                 {
-                                    <li class="paginate_button page-item active">
-                                        <button @onclick="async() => await moveToPageAsync(page) " data-dt-idx="1" disabled class="page-link">@i</button>
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li class="paginate_button page-item">
-                                        <button @onclick="async() => await moveToPageAsync(page) " data-dt-idx="1" class="page-link">@i</button>
-                                    </li>
-                                }
+                                    int page = i;
+                                    @if (page == PageNumber)
+                                    {
+                                        <li class="paginate_button page-item active">
+                                            <button @onclick="async() => await moveToPageAsync(page) " data-dt-idx="1" disabled class="page-link">@i</button>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="paginate_button page-item">
+                                            <button @onclick="async() => await moveToPageAsync(page) " data-dt-idx="1" class="page-link">@i</button>
+                                        </li>
+                                    }
 
-                            }
-                            <li class="paginate_button page-item next" id="example_next">
-                                <a href="#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                            </li>
-                        </ul>
+                                }
+                                <li class="paginate_button page-item next" id="example_next">
+                                    <a href="#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
-    }
+    </div>
+}
 
 @code {
     private string TitleModal;

@@ -61,6 +61,7 @@ namespace InventaryApp.Server.Services
         public async Task<Product> EditProductAsync(string id,string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, decimal newCost, decimal newPrice, string userId)
         {
             var product = await _dbContext.products.FindAsync(id);
+            
             if (product.UserId != userId || product.Status)
                 return null;
 

@@ -17,7 +17,7 @@ namespace InventaryApp.Shared.Services
         }
 
         public string AccessToken
-            {
+        {
             get => client.AccessToken;
             set
             {
@@ -35,8 +35,8 @@ namespace InventaryApp.Shared.Services
         {
 
             var response = await client.SendFormProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product", ActionType.POST,
-                new StringFormKeyValue("Code", model.Code), 
-                new StringFormKeyValue("Name", model.Name), 
+                new StringFormKeyValue("Code", model.Code),
+                new StringFormKeyValue("Name", model.Name),
                 new StringFormKeyValue("Description", model.Description),
                 new StringFormKeyValue("BrandId", model.BrandId),
                 new StringFormKeyValue("CategoryId", model.CategoryId),
@@ -71,20 +71,20 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<ProductCollectionPagingResponse> GetAllProductByPageAsync(int page = 1, int pageSize=10)
+        public async Task<ProductCollectionPagingResponse> GetAllProductByPageAsync(int page = 1)
         {
-            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product?/PageSize={pageSize}&page={page}");
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product?page={page}");
             return response.Result;
         }
 
-        public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int pageSize=10, int page = 1)
+        public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int page = 1)
         {
-            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/search?query={query}/pageSize={pageSize}&page={page}");
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/search?query={query}&page={page}");
             return response.Result;
         }
 
 
-       
+
 
     }
 }
