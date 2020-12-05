@@ -38,7 +38,7 @@ namespace InventaryApp.Server.Controllers
             
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var addProduct = await _productService.AddProductAsync(model.Code, model.Name, model.Description, model.Brand, model.Category, model.Cost, model.Price, userId);
+            var addProduct = await _productService.AddProductAsync(model.Code, model.Name, model.Description, model.BrandId, model.CategoryId, model.Cost, model.Price, userId);
 
             if (addProduct != null)
             {

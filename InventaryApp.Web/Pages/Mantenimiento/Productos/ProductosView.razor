@@ -1,8 +1,12 @@
 ﻿@page "/mantenimiento/productos"
+@page "/mantenimiento/productos/{pageNumber}"
 @inject IModalService Modal
 @inject IJSRuntime js
+@inject ProductServices productService
 @attribute [Authorize]
-
+    @if(isBusy){
+<h2> Cargando ......</h2>
+    }else{
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
@@ -71,22 +75,27 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var p in product)
+                            {
+                                <tr role="row" class="odd">
 
-                            <tr role="row" class="odd">
-                                <td class="sorting_1 dtr-control" tabindex="0">Airi Satou</td>
-                                <td>Accountant</td>
-                                <td>Tokyo</td>
-                                <td>33</td>
-                                <td>2008/11/28</td>
-                                <td>
-                                    <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                    <td class="sorting_1 dtr-control" tabindex="0">@p.Code</td>
+                                    <td>@p.Name</td>
+                                    <td>@p.CategoryId</td>
+                                    <td>@p.Description</td>
+                                    <td>@p.Price</td>
+                                    <td>
+                                        <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+
+                            }
 
 
                         </tbody>
@@ -131,25 +140,37 @@
     </div>
 
 </div>
-
+    }
 
 @code {
     private string TitleModal;
+    bool isBusy = false;
+    [Parameter]
+    public int? PageNumber { get; set; }
+
 
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
+    List<ProductViewModel> product = new List<ProductViewModel>();
 
-
-
-
-
-    private void AsignarTituloModal(String titulo)
+    async Task getPorductos()
     {
-        TitleModal = titulo;
+        isBusy = true;
+        var userState = authenticationState.Result;
+        productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
+        if (PageNumber == null)
+            PageNumber = 1;
+        var result = await productService.GetAllProductByPageAsync(PageNumber.Value);
+        product = result.Records.ToList();
 
+        isBusy = false;
     }
 
 
+    protected override async Task OnInitializedAsync()
+    {
+        await getPorductos();
+    }
 
 
     async Task mostrar()

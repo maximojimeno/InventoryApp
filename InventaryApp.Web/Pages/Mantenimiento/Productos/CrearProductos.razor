@@ -45,7 +45,7 @@
                 <div class="col-md-6">
                     <div class="position-relative form-group">
                         <label for="exampleAddress" class="">Categoria</label>
-                        <InputSelect @bind-Value="producto.Category" class="form-control">
+                        <InputSelect @bind-Value="producto.CategoryId" class="form-control">
 
                             <option value="" selected>---------- Select----------</option>
                             <option value="1">1</option>
@@ -53,20 +53,20 @@
                                     <option value="@cat.Id">@cat.Name</option>
                                 }*@
                         </InputSelect>
-                        <ValidationMessage For="@(()=>producto.Category)" />
+                        <ValidationMessage For="@(()=>producto.CategoryId)" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="position-relative form-group">
                         <label for="exampleAddress2" class="">Marcas</label>
-                        <InputSelect @bind-Value="producto.Brand" class="form-control">
+                        <InputSelect @bind-Value="producto.BrandId" class="form-control">
                             <option value="" selected>---------- Select----------</option>
                             <option value="1">1</option>
                             @*  @foreach (var cat in ListBrand){
                                   <option value="@cat.Id">@cat.Name</option>
                                 }*@
                         </InputSelect>
-                        <ValidationMessage For="@(()=>producto.Brand)" />
+                        <ValidationMessage For="@(()=>producto.BrandId)" />
                     </div>
                 </div>
             </div>
