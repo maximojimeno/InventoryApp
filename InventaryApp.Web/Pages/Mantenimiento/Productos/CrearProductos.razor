@@ -1,229 +1,245 @@
 ﻿@inject IModalService Modal
 @inject ProductServices productService
 @inject IJSRuntime js
+@inject BrandServices brandServices
+@inject CategoryServices categoryService
 
 @attribute [Authorize]
 
 
-    <EditForm Model="producto" OnValidSubmit="SaveProduct">
-        <DataAnnotationsValidator />
+<EditForm Model="producto" OnValidSubmit="SaveProduct">
+    <DataAnnotationsValidator />
 
-        <div class="app-page-title">
-            <div class="page-title-wrapper">
-                <div class="page-title-heading">
-                    <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
-                    <div>
-                        @Titulo
-                        <div class="page-title-subheading">Creas todos los productos que necesites.</div>
-                    </div>
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+                <div>
+                    @Titulo
+                    <div class="page-title-subheading">Creas todos los productos que necesites.</div>
                 </div>
-
-
             </div>
+
+
         </div>
+    </div>
 
-        <div class="main-card mb-3 card">
-            <div class="card-body">
+    <div class="main-card mb-3 card">
+        <div class="card-body">
 
 
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="exampleEmail11" class="">Nombre</label>
-                            <InputText class="form-control" placeholder="Nombre productos" @bind-Value="producto.Name" />
-                            <ValidationMessage For="@(()=>producto.Name)" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="examplePassword11" class="">Codigo</label>
-                            <InputText class="form-control" placeholder="Codigo del producto" @bind-Value="producto.Code" />
-                            <ValidationMessage For="@(()=>producto.Code)" />
-                        </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Nombre</label>
+                        <InputText class="form-control" placeholder="Nombre productos" @bind-Value="producto.Name" />
+                        <ValidationMessage For="@(()=>producto.Name)" />
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="exampleAddress" class="">Categoria</label>
-                            <InputSelect @bind-Value="producto.CategoryId" class="form-control">
-
-                                <option value="" selected>---------- Select----------</option>
-                                <option value="1">1</option>
-                                @* @foreach (var cat in ListCategory){
-                                        <option value="@cat.Id">@cat.Name</option>
-                                    }*@
-                            </InputSelect>
-                            <ValidationMessage For="@(()=>producto.CategoryId)" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="exampleAddress2" class="">Marcas</label>
-                            <InputSelect @bind-Value="producto.BrandId" class="form-control">
-                                <option value="" selected>---------- Select----------</option>
-                                <option value="1">1</option>
-                                @*  @foreach (var cat in ListBrand){
-                                      <option value="@cat.Id">@cat.Name</option>
-                                    }*@
-                            </InputSelect>
-                            <ValidationMessage For="@(()=>producto.BrandId)" />
-                        </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="examplePassword11" class="">Codigo</label>
+                        <InputText class="form-control" placeholder="Codigo del producto" @bind-Value="producto.Code" />
+                        <ValidationMessage For="@(()=>producto.Code)" />
                     </div>
                 </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleAddress" class="">Categoria</label>
+                        <InputSelect @bind-Value="producto.CategoryId" class="form-control">
 
-                <div class="form-row">
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="exampleCity" class="">Precio Costo</label>
-                            <InputNumber class="form-control" placeholder="Precio compra" @bind-Value="producto.Cost" />
-                            <ValidationMessage For="@(()=>producto.Cost)" />
-                        </div>
+                            <option value="" selected>---------- Select----------</option>
+                        
+                            @foreach (var cat in listCategory){
+                                    <option value="@cat.Id">@cat.Name</option>
+                                }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>producto.CategoryId)" />
                     </div>
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="exampleCity" class="">Precio Costo</label>
-                            <InputNumber class="form-control" placeholder="Precio venta" @bind-Value="producto.Price" />
-                            <ValidationMessage For="@(()=>producto.Price)" />
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="exampleState" class="">Especificacion</label>
-                            <InputSelect @bind-Value="producto.Description" class="form-control">
-                                <option value="" selected>---------- Select----------</option>
-                                @foreach (var desc in Description)
-                                    {
-                                    <option value="@desc">@desc</option>
-                                    }
-                            </InputSelect>
-                            <ValidationMessage For="@(()=>producto.Description)" />
-                        </div>
-                    </div>
-
                 </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleAddress2" class="">Marcas</label>
+                        <InputSelect @bind-Value="producto.BrandId" class="form-control">
+                            <option value="" selected>---------- Select----------</option>
+                        
+                     @foreach (var brand in listBrand){
+                                  <option value="@brand.Id">@brand.Name</option>
+                                }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>producto.BrandId)" />
+                    </div>
+                </div>
+            </div>
 
-                <button type="submit" class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
-                <button class="mt-2 btn btn-danger" @onclick="@(()=> Limpiar() )" style=" float: right;">Limpiar</button>
-
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleCity" class="">Precio Costo</label>
+                        <InputNumber class="form-control" placeholder="Precio compra" @bind-Value="producto.Cost" />
+                        <ValidationMessage For="@(()=>producto.Cost)" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleCity" class="">Precio Costo</label>
+                        <InputNumber class="form-control" placeholder="Precio venta" @bind-Value="producto.Price" />
+                        <ValidationMessage For="@(()=>producto.Price)" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleState" class="">Especificacion</label>
+                        <InputSelect @bind-Value="producto.Description" class="form-control">
+                            <option value="" selected>---------- Select----------</option>
+                            @foreach (var desc in Description)
+                            {
+                                <option value="@desc">@desc</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>producto.Description)" />
+                    </div>
+                </div>
 
             </div>
 
+            <button type="submit" class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
+            <button class="mt-2 btn btn-danger" @onclick="@(()=> Limpiar() )" style=" float: right;">Limpiar</button>
+
+
         </div>
-    </EditForm>
 
-    @code {
-        private ProductViewModel producto = new ProductViewModel();
-        bool isBusy = false;
+    </div>
+</EditForm>
 
-        [CascadingParameter]
-        private Task<AuthenticationState> authenticationState { get; set; }
+@code {
+    private ProductViewModel producto = new ProductViewModel();
+    bool isBusy = false;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    List<CategoryViewModel> listCategory = new List<CategoryViewModel>();
+    List<BrandViewModel> listBrand = new List<BrandViewModel>();
+
+
+    private String[] Description = { "Unidades", "Libras", "Cajas" };
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public string ProductId { get; set; }
+
+    public string Titulo = "Crear Productos";
+
+    ProductViewModel productModalEdit { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var userState = authenticationState.Result;
+        var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+        categoryService.AccessToken = AccessToken;
+        brandServices.AccessToken = AccessToken;
+
+        var result = await categoryService.GetAllCategoryAsync();
+        listCategory = result.Records.ToList();
+
+        var result2 = await brandServices.GetAllBrandAsync();
+        listBrand = result2.Records.ToList();
 
 
 
-        private String[] Description = { "Unidades", "Libras", "Cajas" };
-
-        [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
-
-        [Parameter] public string ProductId { get; set; }
-
-        public string Titulo = "Crear Productos";
-
-        ProductViewModel productModalEdit { get; set; }
-
-        protected async override Task OnInitializedAsync()
+        if (ProductId != null)
         {
-            if (ProductId != null)
-            {
-                Titulo = "Editar Productos";
-                await getProductById();
-            }
+            Titulo = "Editar Productos";
+            await getProductById();
+        }
 
+
+
+
+    }
+
+
+    public async Task SaveProduct()
+
+    {
+        if (ProductId != null)
+        {
+            await editProduct();
+        }
+        else
+        {
             var userState = authenticationState.Result;
-            productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
+            var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+            productService.AccessToken = AccessToken;
 
 
-        }
+            var result = await productService.ProductPostAsync(producto);
 
-
-        public async Task SaveProduct()
-
-        {
-            if (ProductId != null)
-            {
-                await editProduct();
-            }
-            else
-            {
-                var userState = authenticationState.Result;
-                var AccessToken = userState.User.FindFirst("AccessToken").Value;
-
-                productService.AccessToken = AccessToken;
-
-
-                var result = await productService.ProductPostAsync(producto);
-
-                if (result.IsSuccess)
-                {
-                    await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
-                    await js.AvisoAlert("Se guardo el produco!", "1500", "center", TiposDeAlertas.success);
-                }
-                else
-                {
-                    await BlazoredModal.Close(ModalResult.Cancel());
-                    await js.MostrarMensajes("Error", "No se pudo guardar el producto", TiposDeAlertas.error);
-                }
-            }
-
-        }
-
-        private void Limpiar()
-        {
-            producto = new ProductViewModel();
-        }
-
-        async Task getProductById()
-        {
-            isBusy = true;
-            var result = await productService.GetProductByIdAsync(ProductId);
             if (result.IsSuccess)
             {
-                producto.Name = result.Record.Name;
-                producto.Code = result.Record.Code;
-                producto.BrandId = result.Record.BrandId;
-                producto.CategoryId = result.Record.CategoryId;
-                producto.Cost = result.Record.Cost;
-                producto.Description = result.Record.Description;
-                producto.Price = result.Record.Price;
-                producto.Id = ProductId;
-
-            }
-            else
-            {
-                await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
-            }
-
-            isBusy = false;
-        }
-
-        async Task editProduct()
-        {
-            isBusy = true;
-            var result = await productService.EditProductAsync(producto);
-            if (result.IsSuccess)
-            {
-                await BlazoredModal.Close(ModalResult.Ok($"Edito con exito"));
-                await js.AvisoAlert("Se edito el produco!","1500","center",TiposDeAlertas.success);
+                await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
+                await js.AvisoAlert("Se guardo el produco!", "1500", "center", TiposDeAlertas.success);
             }
             else
             {
                 await BlazoredModal.Close(ModalResult.Cancel());
-                await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+                await js.MostrarMensajes("Error", "No se pudo guardar el producto", TiposDeAlertas.error);
             }
-
-            isBusy = false;
-
         }
 
+    }
+
+    private void Limpiar()
+    {
+        producto = new ProductViewModel();
+    }
+
+    async Task getProductById()
+    {
+        isBusy = true;
+        var result = await productService.GetProductByIdAsync(ProductId);
+        if (result.IsSuccess)
+        {
+            producto.Name = result.Record.Name;
+            producto.Code = result.Record.Code;
+            producto.BrandId = result.Record.BrandId;
+            producto.CategoryId = result.Record.CategoryId;
+            producto.Cost = result.Record.Cost;
+            producto.Description = result.Record.Description;
+            producto.Price = result.Record.Price;
+            producto.Id = ProductId;
+
+        }
+        else
+        {
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+    }
+
+    async Task editProduct()
+    {
+        isBusy = true;
+        var result = await productService.EditProductAsync(producto);
+        if (result.IsSuccess)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"Edito con exito"));
+            await js.AvisoAlert("Se edito el produco!", "1500", "center", TiposDeAlertas.success);
+        }
+        else
+        {
+            await BlazoredModal.Close(ModalResult.Cancel());
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
 
     }
+
+
+}

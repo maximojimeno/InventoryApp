@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InventaryApp.Shared.Services
 {
-    class CategoryServices
+   public  class CategoryServices
     {
         private readonly string _baseUrl;
 

@@ -48,15 +48,14 @@ else
                     <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
                         <div class="row">
                             <div class="col-md-3" style="padding-right:0px !important;">
-                                <select class="mb-2 form-control">
+                                <select @bind="Filtro"  class="mb-2 form-control">
                                     <option>Nombre</option>
-                                    <option>Categoria</option>
                                     <option>Codigo</option>
                                 </select>
 
                             </div>
                             <div class="col-md-6" style="padding-left: 0px !important;">
-                                <input type="text"  @bind-value="Query" class="form-control" placeholder="Buscar...">
+                                <input type="text" @bind-value="Query" class="form-control" placeholder="Buscar...">
 
                             </div>
                             <div class="col-md-3">
@@ -156,6 +155,7 @@ else
     [Parameter]
     public int? PageNumber { get; set; }
     public string Query { get; set; }
+    public string Filtro { get; set; }
 
 
 
@@ -171,7 +171,7 @@ else
         productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
         if (PageNumber == null)
             PageNumber = 1;
-        Console.WriteLine(Query);
+       
 
         ProductCollectionPagingResponse result;
         if (string.IsNullOrWhiteSpace(Query))
@@ -199,6 +199,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+
         await getProductos();
     }
 
@@ -219,7 +220,7 @@ else
     {
 
         var parameters = new ModalParameters();
-        parameters.Add(nameof(CrearProductos.ProductId),productId);
+        parameters.Add(nameof(CrearProductos.ProductId), productId);
 
         var forModal = Modal.Show<CrearProductos>("Editar productos", parameters);
         var result = await forModal.Result;
