@@ -23,6 +23,10 @@ namespace InventaryApp.Web.Helpers
             return await js.InvokeAsync<bool>("customComfirm", titulo, mensajes, tiposDeAlertas.ToString());
         }
 
+        public async static Task<bool> AvisoAlert(this IJSRuntime js, string titulo,  string tiempo, string position, TiposDeAlertas tiposDeAlertas)
+        {
+            return await js.InvokeAsync<bool>("avisoAlert", titulo,position, tiempo, tiposDeAlertas.ToString());
+        }
 
 
     }

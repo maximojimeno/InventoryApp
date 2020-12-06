@@ -20,7 +20,7 @@ else
                 </div>
             </div>
             <div class="page-title-actions">
-                <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" @onclick="@(() => Modal.Show<CrearProductos>("Crear Productos"))">
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" @onclick="@(async() => await modalProduct())">
                     <i class="fas fa-plus"></i>Agregar Productos
                 </button>
             </div>
@@ -88,7 +88,7 @@ else
                                         <td>@p.Description</td>
                                         <td>@p.Price</td>
                                         <td>
-                                            <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => EditProduct(p.Id))">
+                                            <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(async() => await EditProduct(p.Id))">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
@@ -158,6 +158,7 @@ else
     public string Query { get; set; }
 
 
+
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
     List<ProductViewModel> product = new List<ProductViewModel>();
@@ -186,7 +187,7 @@ else
         isBusy = false;
     }
 
-   
+
 
 
     async Task moveToPageAsync(int pageNumber)
@@ -214,16 +215,32 @@ else
         }
     }
 
-    void EditProduct(string productId)
+    async Task EditProduct(string productId)
     {
-      
+
         var parameters = new ModalParameters();
         parameters.Add(nameof(CrearProductos.ProductId),productId);
 
-        Modal.Show<CrearProductos>("Editar productos", parameters);
+        var forModal = Modal.Show<CrearProductos>("Editar productos", parameters);
+        var result = await forModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await OnInitializedAsync();
+        }
+
     }
 
 
+    async Task modalProduct()
+    {
+        var forModal = Modal.Show<CrearProductos>("Crear Productos");
+        var result = await forModal.Result;
 
+        if (!result.Cancelled)
+        {
+            await OnInitializedAsync();
+        }
+    }
 
 }

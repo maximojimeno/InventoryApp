@@ -152,3 +152,15 @@ $(document).ready(function () {
 
     }
 
+function avisoAlert(titulo,tipo,tiempo,position) {
+    return new Promise((resolve) => {
+        Swal.fire({
+            position:"center",
+            icon: "success",
+            title: titulo,
+            showConfirmButton: false,
+            timer: tiempo
+        })
+    resolve(true);
+    });
+}
