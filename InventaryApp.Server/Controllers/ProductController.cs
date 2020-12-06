@@ -7,6 +7,8 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+
+
 namespace InventaryApp.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -135,7 +137,7 @@ namespace InventaryApp.Server.Controllers
         }
 
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Product>))]
-        [HttpGet("query={query}")]
+        [HttpGet("query={query}/page={page}")]
         public IActionResult Get(string query, int page)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

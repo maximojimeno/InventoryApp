@@ -1,7 +1,5 @@
 ﻿using AKSoftware.WebApi.Client;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InventaryApp.Shared.Services
@@ -79,7 +77,7 @@ namespace InventaryApp.Shared.Services
 
         public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int page = 1)
         {
-            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/query={query}&page={page}");
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/query={query}/page={page}");
             return response.Result;
         }
 

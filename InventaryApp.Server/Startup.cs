@@ -1,3 +1,6 @@
+using InventaryApp.Server.DataAccess;
+using InventaryApp.Server.Models;
+using InventaryApp.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,11 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
-using InventaryApp.Server.DataAccess;
-using InventaryApp.Server.Services;
-using InventaryApp.Server.Models;
+using Newtonsoft.Json;
 using System;
+using System.Text;
 
 namespace InventaryApp.Server
 {
@@ -28,6 +29,15 @@ namespace InventaryApp.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddControllersWithViews()
+               .AddNewtonsoftJson(options =>
+               {
+                   options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                   options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+               });
+
+            services.AddRazorPages();
             //Cors
             services.AddCors(Options =>
             {
@@ -39,6 +49,7 @@ namespace InventaryApp.Server
                     .AllowAnyHeader();
                 });
             });
+
 
             //configure EntityFrameCore with SQL SERVER
 
@@ -107,7 +118,10 @@ namespace InventaryApp.Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
