@@ -103,7 +103,7 @@ namespace InventaryApp.Server.Services
         public IEnumerable<Product> SearchProductAsync(string query, int pageSize, int pageNumber, string userId, out int totalProducts)
         {
             // total plans 
-            var allProducts = _dbContext.products.Where(p => !p.Status && p.UserId == userId && (p.Code.Contains(query) || p.Name.Contains(query)));
+            var allProducts = _dbContext.products.Where(p => !p.Status && p.UserId == userId && (p.Code.Contains(query) || p.Name.Contains(query)|| p.Category.Name.Contains(query) || p.Brand.Name.Contains(query)));
 
             totalProducts = allProducts.Count();
 
