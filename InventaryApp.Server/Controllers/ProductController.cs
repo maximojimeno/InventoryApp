@@ -27,6 +27,30 @@ namespace InventaryApp.Server.Controllers
             _productService = productService;
         }
 
+        [ProducesResponseType(200, Type = typeof(OperationResponse<Product>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<Product>))]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var product = await _productService.GetProductById(id, userId);
+            if (product == null)
+                return BadRequest(new OperationResponse<string>
+                {
+                    IsSuccess = false,
+                    Message = "Invalid operation",
+                });
+
+            return Ok(new OperationResponse<Product>
+            {
+                Record = product,
+                Message = "Product retrieved successfully!",
+                IsSuccess = true,
+                OperationDate = DateTime.UtcNow
+            });
+        }
+
 
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(Product))]
