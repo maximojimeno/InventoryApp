@@ -25,7 +25,7 @@ namespace InventaryApp.Shared.Services
             }
         }
 
-        public async Task<ProductSingleResponse> GetPlanByIdAsync(string id)
+        public async Task<ProductSingleResponse> GetProductByIdAsync(string id)
         {
             var response = await client.GetProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product/{id}");
             return response.Result;
@@ -77,13 +77,12 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int page = 1)
+        public async Task<ProductCollectionPagingResponse> SearchProductByPageAsync(string query, int page = 1)
         {
             var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/query={query}&page={page}");
             return response.Result;
         }
-
-
+   
 
 
     }

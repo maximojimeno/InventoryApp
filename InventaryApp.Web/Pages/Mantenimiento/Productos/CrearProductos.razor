@@ -12,7 +12,7 @@
             <div class="page-title-heading">
                 <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
                 <div>
-                    Crear Productos
+                   @Titulo
                     <div class="page-title-subheading">Creas todos los productos que necesites.</div>
                 </div>
             </div>
@@ -113,15 +113,36 @@
 
 @code {
     private ProductViewModel producto = new ProductViewModel();
-
+    bool isBusy = false;
 
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
 
 
-    // private List<CategoryViewModel> ListCategory
-    //private List<BrandViewModel> ListBrand;
+
     private String[] Description = { "Unidades", "Libras", "Cajas" };
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public string ProductId { get; set; }
+
+    public string Titulo = "Crear Productos";
+
+    ProductViewModel productModalEdit { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (ProductId != null)
+        {
+            Titulo = "Editar Productos";
+        }
+
+        var userState = authenticationState.Result;
+        productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+        await getProductById();
+    }
+
 
     public async Task SaveProduct()
 
@@ -148,5 +169,21 @@
     {
         producto = new ProductViewModel();
     }
+
+    async Task getProductById()
+    {
+        isBusy = true;
+        var result = await productService.GetProductByIdAsync(ProductId);
+        if (result.IsSuccess)
+        {
+            producto.Name = result.Record.Name;
+        }
+        else{
+            await js.MostrarMensajes("Error",result.Message, TiposDeAlertas.success);
+        }
+
+        isBusy = false;
+    }
+
 
 }

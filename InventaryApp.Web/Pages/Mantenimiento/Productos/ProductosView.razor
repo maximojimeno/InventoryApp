@@ -56,7 +56,7 @@ else
 
                             </div>
                             <div class="col-md-6" style="padding-left: 0px !important;">
-                                <input type="text"  @bind="Query" class="form-control" placeholder="Buscar...">
+                                <input type="text"  @bind-value="Query" class="form-control" placeholder="Buscar...">
 
                             </div>
                             <div class="col-md-3">
@@ -88,7 +88,7 @@ else
                                         <td>@p.Description</td>
                                         <td>@p.Price</td>
                                         <td>
-                                            <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearProductos>("Editar Productos"))">
+                                            <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => EditProduct(p.Id))">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
@@ -170,12 +170,13 @@ else
         productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
         if (PageNumber == null)
             PageNumber = 1;
+        Console.WriteLine(Query);
 
         ProductCollectionPagingResponse result;
         if (string.IsNullOrWhiteSpace(Query))
             result = await productService.GetAllProductByPageAsync(PageNumber.Value);
         else
-            result = await productService.SearchPlansByPageAsync(Query, PageNumber.Value);
+            result = await productService.SearchProductByPageAsync(Query, PageNumber.Value);
         if (result.Count % result.PageSize == 0)
             totalPage = result.Count / result.PageSize;
         else
@@ -184,6 +185,9 @@ else
 
         isBusy = false;
     }
+
+   
+
 
     async Task moveToPageAsync(int pageNumber)
     {
@@ -209,5 +213,17 @@ else
             await js.MostrarMensajes("UUUPS", "Producto sin eliminar", TiposDeAlertas.warning);
         }
     }
+
+    void EditProduct(string productId)
+    {
+      
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(CrearProductos.ProductId),productId);
+
+        Modal.Show<CrearProductos>("Editar productos", parameters);
+    }
+
+
+
 
 }
