@@ -79,7 +79,7 @@ namespace InventaryApp.Shared.Services
 
         public async Task<ProductCollectionPagingResponse> SearchPlansByPageAsync(string query, int page = 1)
         {
-            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/search?query={query}&page={page}");
+            var response = await client.GetProtectedAsync<ProductCollectionPagingResponse>($"{_baseUrl}/api/product/query={query}&page={page}");
             return response.Result;
         }
 

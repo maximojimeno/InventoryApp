@@ -27,5 +27,6 @@ namespace InventaryApp.Server.Entities
         public string BrandId { get; set; }
         [ForeignKey("Category")]
         public string CategoryId { get; set; }
+
     }
 }
