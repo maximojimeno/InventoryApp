@@ -29,30 +29,17 @@ else
     </div>
 
     <div class="main-card mb-3 card">
-        <div class="card-body">
+        <div class="card-body" style="padding-top:0px !important">
             <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                <div class="row">
+                <div class="row" style=" padding-bottom: 15px !important;">
                     <div class="col-sm-12 col-md-4">
-                        <div class="dataTables_length" id="example_length">
-                            <label>
-                                Show <select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select> entries
-                            </label>
-                        </div>
+                       
                     </div>
 
                     <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
                         <div class="row">
                             <div class="col-md-3" style="padding-right:0px !important;">
-                                <select @bind="Filtro"  class="mb-2 form-control">
-                                    <option>Nombre</option>
-                                    <option>Codigo</option>
-                                </select>
-
+                               
                             </div>
                             <div class="col-md-6" style="padding-left: 0px !important;">
                                 <input type="text" @bind-value="Query" class="form-control" placeholder="Buscar...">
@@ -108,12 +95,8 @@ else
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 col-md-5">
-                        <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
-                            Showing 1 to 10 of 57 entries
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
+                    
+                    <div class="col-sm-12 col-md-12">
                         <div class="dataTables_paginate paging_simple_numbers" id="example_paginate" style=" float: right;">
                             <ul class="pagination">
                                 <li class="paginate_button page-item previous disabled" id="example_previous">
