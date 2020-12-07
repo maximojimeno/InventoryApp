@@ -68,7 +68,7 @@ namespace InventaryApp.Shared.Services
 
         public async Task<AccountCollectionPagingResponse> GetAllAccountByPageAsync(int page = 1)
         {
-            var response = await client.GetProtectedAsync<AccountCollectionPagingResponse>($"{_baseUrl}/api/product?page={page}");
+            var response = await client.GetProtectedAsync<AccountCollectionPagingResponse>($"{_baseUrl}/api/account?page={page}");
             return response.Result;
         }
 
