@@ -7,7 +7,7 @@
 
 @if (isBusy)
 {
-    <h2> Cargando ......</h2>
+    <img src="assets/images/cargar.gif" class="cargar" />
 }
 else
 {
@@ -16,7 +16,7 @@ else
             <div class="page-title-heading">
                 <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
                 <div>
-                   Marcas
+                    Marcas
                     <div class="page-title-subheading">Lista de todas las marcas.</div>
                 </div>
             </div>
@@ -157,7 +157,7 @@ else
         brandService.AccessToken = userState.User.FindFirst("AccessToken").Value;
         if (PageNumber == null)
             PageNumber = 1;
-       BrandCollectionPagingResponse result;
+        BrandCollectionPagingResponse result;
 
         if (string.IsNullOrWhiteSpace(Query))
             result = await brandService.GetAllBrandByPageAsync(PageNumber.Value);
@@ -167,7 +167,7 @@ else
             totalPage = result.Count / result.PageSize;
         else
             totalPage = (result.Count / result.PageSize) + 1;
-       brand = result.Records.ToList();
+        brand = result.Records.ToList();
 
         isBusy = false;
     }
@@ -180,7 +180,7 @@ else
     }
 
 
-   
+
 
     async Task modalBrand()
     {

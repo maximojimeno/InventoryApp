@@ -26,3 +26,11 @@
     opacity: 1 !important;
     font-weight: bold;
 }
+
+.cargar {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: 40%;
+    left: 42%;
+}
