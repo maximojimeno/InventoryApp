@@ -33,7 +33,7 @@ namespace InventaryApp.Server.Services
 
         public async Task<IEnumerable<Brand>> GetAllBrandAsync(string userId)
         {
-            var allBrands = await _dbContext.brands
+            var allBrands = await _dbContext.Brands
                 .Where(p => !p.Status && p.UserId == userId)
                 .ToListAsync();
 
@@ -53,7 +53,7 @@ namespace InventaryApp.Server.Services
         }
         public async Task<Brand> EditBrandAsync(string id, string newName, string userId)
         {
-            var brand = await _dbContext.brands.FindAsync(id);
+            var brand = await _dbContext.Brands.FindAsync(id);
 
             if (brand.UserId != userId || brand.Status)
                 return null;
@@ -66,14 +66,14 @@ namespace InventaryApp.Server.Services
         }
         public async Task<Brand> GetBrandById(string id, string userId)
         {
-            var brand = await _dbContext.brands.FindAsync(id);
+            var brand = await _dbContext.Brands.FindAsync(id);
             if (brand.UserId != userId || brand.Status)
                 return null;
             return brand;
         }
         public async Task<Brand> DeleteBrandAsync(string id, string userId)
         {
-            var brand = await _dbContext.brands.FindAsync(id);
+            var brand = await _dbContext.Brands.FindAsync(id);
             if (brand.UserId != userId || brand.Status)
                 return null;
 
@@ -86,7 +86,7 @@ namespace InventaryApp.Server.Services
         public IEnumerable<Brand> SearchBrandAsync(string query, int pageSize, int pageNumber, string userId, out int totalBrand)
         {
 
-            var allBrands = _dbContext.brands.Where(c => !c.Status && c.UserId == userId && (c.Name.Contains(query)));
+            var allBrands = _dbContext.Brands.Where(c => !c.Status && c.UserId == userId && (c.Name.Contains(query)));
 
             totalBrand = allBrands.Count();
 
@@ -96,7 +96,7 @@ namespace InventaryApp.Server.Services
         }
         public IEnumerable<Brand> GetAllBrandCollectionAsync(int pageSize, int pageNumber, string userId, out int totalBrand)
         {
-            var allBrands = _dbContext.brands.Where(p => !p.Status && p.UserId == userId);
+            var allBrands = _dbContext.Brands.Where(p => !p.Status && p.UserId == userId);
             totalBrand = allBrands.Count();
             var brands = allBrands.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
             return brands;

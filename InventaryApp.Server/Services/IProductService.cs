@@ -50,13 +50,13 @@ namespace InventaryApp.Server.Services
         }
         public IEnumerable<Product> GetAllProductAsync(int pageSize, int pageNumber, string userId, out int totalProduct)
         {
-            var allProducts = _dbContext.products.Where(p => !p.Status && p.UserId == userId);
+            var allProducts = _dbContext.Products.Where(p => !p.Status && p.UserId == userId);
                 totalProduct = allProducts.Count();
             var product = allProducts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
 
             foreach (var item in product)
             {
-                item.BrandId = _dbContext.brands
+                item.BrandId = _dbContext.Brands
                     .Where(i => !i.Status && i.Id == item.BrandId)
                     .Select(s => s.Name)
                     .FirstOrDefault();
@@ -69,7 +69,7 @@ namespace InventaryApp.Server.Services
         }
         public async Task<Product> EditProductAsync(string id,string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, decimal newCost, decimal newPrice, string userId)
         {
-            var product = await _dbContext.products.FindAsync(id);
+            var product = await _dbContext.Products.FindAsync(id);
             
             if (product.UserId != userId || product.Status)
                 return null;
@@ -88,14 +88,14 @@ namespace InventaryApp.Server.Services
         }
         public async Task<Product> GetProductById(string id, string userId)
         {
-            var product = await _dbContext.products.FindAsync(id);
+            var product = await _dbContext.Products.FindAsync(id);
             if (product.UserId != userId || product.Status)
                 return null;
             return product;
         }
         public async Task<Product> DeleteProductAsync(string id, string userId)
         {
-            var product = await _dbContext.products.FindAsync(id);
+            var product = await _dbContext.Products.FindAsync(id);
             if (product.UserId != userId || product.Status)
                 return null;
 
@@ -108,14 +108,14 @@ namespace InventaryApp.Server.Services
         public IEnumerable<Product> SearchProductAsync(string query, int pageSize, int pageNumber, string userId, out int totalProducts)
         {
             // total plans 
-            var allProducts = _dbContext.products.Where(p => !p.Status && p.UserId == userId && (p.Code.Contains(query) || p.Name.Contains(query)|| p.Category.Name.Contains(query) || p.Brand.Name.Contains(query)));
+            var allProducts = _dbContext.Products.Where(p => !p.Status && p.UserId == userId && (p.Code.Contains(query) || p.Name.Contains(query)|| p.Category.Name.Contains(query) || p.Brand.Name.Contains(query)));
 
             totalProducts = allProducts.Count();
 
             var products = allProducts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
             foreach (var item in products)
             {
-                item.BrandId = _dbContext.brands
+                item.BrandId = _dbContext.Brands
                     .Where(i => !i.Status && i.Id == item.BrandId)
                     .Select(s => s.Name)
                     .FirstOrDefault();

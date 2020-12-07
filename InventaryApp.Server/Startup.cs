@@ -92,6 +92,7 @@ namespace InventaryApp.Server
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<ICategoryService, CategotyService>();
             services.AddTransient<IBrandService, BrandServices>();
+            services.AddTransient<IBussinessService, BussinessService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
