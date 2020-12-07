@@ -90,7 +90,7 @@ else
                                             <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(async() => await EditProduct(p.Id))">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => mostrar())">
+                                            <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() =>selectId(p.Id))">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
@@ -171,7 +171,7 @@ else
         productService.AccessToken = userState.User.FindFirst("AccessToken").Value;
         if (PageNumber == null)
             PageNumber = 1;
-       
+
 
         ProductCollectionPagingResponse result;
         if (string.IsNullOrWhiteSpace(Query))
@@ -204,11 +204,13 @@ else
     }
 
 
-    async Task mostrar()
+    async Task selectId(string id)
     {
+
         if (await js.Comfirmar("Eliminar", "Esta seguro que desea eliminar", TiposDeAlertas.error))
         {
-            await js.MostrarMensajes("Listo", "Producto elimidado", TiposDeAlertas.success);
+            selectProductId = id;
+            await DeleteProduct();
         }
         else
         {
@@ -230,6 +232,26 @@ else
             await OnInitializedAsync();
         }
 
+    }
+    string selectProductId = string.Empty;
+    async Task DeleteProduct()
+    {
+        isBusy = true;
+        var result = await productService.DeletePlanAsync(selectProductId);
+        if (result.IsSuccess)
+        {
+            var deleteProduct = product.SingleOrDefault(p => p.Id == selectProductId);
+            product.Remove(deleteProduct);
+            await js.AvisoAlert("Producto borrado con exito!", "1500", "center", TiposDeAlertas.success);
+            await OnInitializedAsync();
+
+        }
+        else
+        {
+            await js.AvisoAlert("Error!", "1500", "center", TiposDeAlertas.error);
+        }
+
+        isBusy = false;
     }
 
 
