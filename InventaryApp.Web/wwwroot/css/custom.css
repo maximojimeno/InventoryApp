@@ -19,3 +19,10 @@
     width: 50% !important;
 }
 
+.widget-content .widget-content-left .widget-subheading {
+    opacity: .7 !important;
+}
+.widget-content .widget-content-left .widget-heading {
+    opacity: 1 !important;
+    font-weight: bold;
+}
