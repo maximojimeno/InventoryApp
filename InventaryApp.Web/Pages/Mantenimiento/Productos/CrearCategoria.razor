@@ -1,15 +1,17 @@
 ﻿@inject IModalService Modal
+@inject IJSRuntime js
+@inject CategoryServices categoryService
 
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
             <div>
-              Categorias
+                @Titulo
                 <div class="page-title-subheading">Creas todas las categorias que necesites.</div>
             </div>
         </div>
-        
+
 
     </div>
 </div>
@@ -18,35 +20,129 @@
     <div class="card-body">
         <EditForm Model="@category" OnValidSubmit="@SaveCategory">
             <DataAnnotationsValidator />
+            <ValidationSummary />
             <div class="form-row">
                 <div class="col-md-12">
                     <div class="position-relative form-group">
                         <label for="exampleEmail11" class="">Nombre</label>
                         <InputText class="form-control" placeholder="Nombre productos" @bind-Value="category.Name" />
+                        <ValidationMessage For="@(()=>category.Name)" />
                     </div>
                 </div>
-               
+
             </div>
-      
+
 
 
             <button class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
             <button class="mt-2 btn btn-danger" style=" float: right;">Limpiar</button>
         </EditForm>
 
-        </div>
+    </div>
 
-        </div>
-
-
-        @code {
-            private CategoryViewModel category = new CategoryViewModel();
+</div>
 
 
+@code {
+    private CategoryViewModel category = new CategoryViewModel();
 
-            private void SaveCategory()
+    bool isBusy = false;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public string CategoriaId { get; set; }
+
+    public string Titulo = "Crear Categoria";
+
+    CategoryViewModel categoriaModalEdit { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+
+
+        if (CategoriaId != null)
+        {
+            Titulo = "Editar Categoria";
+            await getCategoriaById();
+        }
+
+    }
+    public async Task SaveCategory()
+
+    {
+        if (CategoriaId != null)
+        {
+            await editCategoria();
+        }
+        else
+        {
+            var userState = authenticationState.Result;
+            var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+            categoryService.AccessToken = AccessToken;
+
+
+            var result = await categoryService.CategoryPostAsync(category);
+
+            if (result.IsSuccess)
             {
-
+                await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
+                await js.AvisoAlert("Se guardo la categoria!", "1500", "center", TiposDeAlertas.success);
             }
+            else
+            {
+                await BlazoredModal.Close(ModalResult.Cancel());
+                await js.MostrarMensajes("Error", "No se pudo guardar la categoria", TiposDeAlertas.error);
+            }
+        }
+
+    }
+
+    private void Limpiar()
+    {
+        category = new CategoryViewModel();
+    }
+
+    async Task getCategoriaById()
+    {
+        isBusy = true;
+        var result = await categoryService.GetCategoryByIdAsync(CategoriaId);
+        if (result.IsSuccess)
+        {
+            category.Name = result.Record.Name;
+            category.Id = CategoriaId;
 
         }
+        else
+        {
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+    }
+  
+    async Task editCategoria()
+    {
+        isBusy = true;
+        var result = await categoryService.EditCategoryAsync(category);
+        if (result.IsSuccess)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"Edito con exito"));
+            await js.AvisoAlert("Se edito la caTEGORIA!", "1500", "center", TiposDeAlertas.success);
+        }
+        else
+        {
+            await BlazoredModal.Close(ModalResult.Cancel());
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+
+    }
+
+}

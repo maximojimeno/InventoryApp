@@ -52,25 +52,25 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<CategorySingleResponse> DeletePlanAsync(string id)
+        public async Task<CategorySingleResponse> DeleteCategoryAsync(string id)
         {
             var response = await client.DeleteProtectedAsync<CategorySingleResponse>($"{_baseUrl}/api/category/{id}");
             return response.Result;
         }
 
-        public async Task<CategoryCollectionPagingResponse> GetAllProductByPageAsync(int page = 1)
+        public async Task<CategoryCollectionPagingResponse> GetAllCategoryByPageAsync(int page = 1)
         {
             var response = await client.GetProtectedAsync<CategoryCollectionPagingResponse>($"{_baseUrl}/api/category/GetAll?page={page}");
             return response.Result;
         }
 
-        public async Task<CategoryCollectionPagingResponse> SearchProductByPageAsync(string query, int page = 1)
+        public async Task<CategoryCollectionPagingResponse> SearchCategoryByPageAsync(string query, int page = 1)
         {
             var response = await client.GetProtectedAsync<CategoryCollectionPagingResponse>($"{_baseUrl}/api/category/query={query}/page={page}");
             return response.Result;
         }
 
-        public async Task<CategorySingleResponse> GetProductByIdAsync(string id)
+        public async Task<CategorySingleResponse> GetCategoryByIdAsync(string id)
         {
             var response = await client.GetProtectedAsync<CategorySingleResponse>($"{_baseUrl}/api/catgory/{id}");
             return response.Result;
