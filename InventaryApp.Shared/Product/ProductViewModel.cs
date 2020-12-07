@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using InventaryApp.Server.Models;
 
 namespace InventaryApp.Shared
 {

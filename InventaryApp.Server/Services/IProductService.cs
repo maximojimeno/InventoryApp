@@ -48,16 +48,25 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return product;
         }
-
         public IEnumerable<Product> GetAllProductAsync(int pageSize, int pageNumber, string userId, out int totalProduct)
         {
             var allProducts = _dbContext.products.Where(p => !p.Status && p.UserId == userId);
                 totalProduct = allProducts.Count();
             var product = allProducts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
+
+            foreach (var item in product)
+            {
+                item.BrandId = _dbContext.brands
+                    .Where(i => !i.Status && i.Id == item.BrandId)
+                    .Select(s => s.Name)
+                    .FirstOrDefault();
+                item.CategoryId = _dbContext.Categories
+                    .Where(i => !i.Status && i.Id == item.CategoryId)
+                    .Select(s => s.Name)
+                    .FirstOrDefault();
+            }
             return product;
         }
-
-
         public async Task<Product> EditProductAsync(string id,string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, decimal newCost, decimal newPrice, string userId)
         {
             var product = await _dbContext.products.FindAsync(id);
@@ -77,7 +86,6 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return product;
         }
-
         public async Task<Product> GetProductById(string id, string userId)
         {
             var product = await _dbContext.products.FindAsync(id);
@@ -85,21 +93,18 @@ namespace InventaryApp.Server.Services
                 return null;
             return product;
         }
-
-
         public async Task<Product> DeleteProductAsync(string id, string userId)
         {
-            var plan = await _dbContext.products.FindAsync(id);
-            if (plan.UserId != userId || plan.Status)
+            var product = await _dbContext.products.FindAsync(id);
+            if (product.UserId != userId || product.Status)
                 return null;
 
-            plan.Status = true;
-            plan.ModifiedDate = DateTime.UtcNow;
+            product.Status = true;
+            product.ModifiedDate = DateTime.UtcNow;
 
             await _dbContext.SaveChangesAsync();
-            return plan;
+            return product;
         }
-
         public IEnumerable<Product> SearchProductAsync(string query, int pageSize, int pageNumber, string userId, out int totalProducts)
         {
             // total plans 
@@ -108,9 +113,18 @@ namespace InventaryApp.Server.Services
             totalProducts = allProducts.Count();
 
             var products = allProducts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToArray();
-           
+            foreach (var item in products)
+            {
+                item.BrandId = _dbContext.brands
+                    .Where(i => !i.Status && i.Id == item.BrandId)
+                    .Select(s => s.Name)
+                    .FirstOrDefault();
+                item.CategoryId = _dbContext.Categories
+                    .Where(i => !i.Status && i.Id == item.CategoryId)
+                    .Select(s => s.Name)
+                    .FirstOrDefault();
+            }
             return products;
         }
-
     }
 }

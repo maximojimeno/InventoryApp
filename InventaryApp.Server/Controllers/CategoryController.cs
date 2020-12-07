@@ -16,11 +16,11 @@ namespace InventaryApp.Server.Controllers
     public class CategoryController : ControllerBase
     {
 
-        private readonly ICategoryService _categotyService;
+        private readonly ICategoryService _categoryService;
 
         public CategoryController(ICategoryService categotyService)
         {
-            _categotyService = categotyService;
+            _categoryService = categotyService;
         }
 
 
@@ -30,7 +30,7 @@ namespace InventaryApp.Server.Controllers
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             
-            var categories = await _categotyService.GetAllCategotyAsync(userId);
+            var categories = await _categoryService.GetAllCategotyAsync(userId);
 
             return Ok(new CollectionResponse<Category>
             {
@@ -41,6 +41,36 @@ namespace InventaryApp.Server.Controllers
                 Records = categories
             });
         }
+
+        [HttpPost]
+        [ProducesResponseType(200, Type = typeof(Category))]
+        [ProducesResponseType(400, Type = typeof(Category))]
+        public async Task<IActionResult> PostAsync([FromForm] CategoryViewModel model)
+        {
+
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var addCategory = await _categoryService.AddCategoryAsync(model.Name, userId);
+
+            if (addCategory != null)
+            {
+                return Ok(new OperationResponse<Category>
+                {
+                    IsSuccess = true,
+                    Message = $"{addCategory.Name} has been added successfully!",
+                    Record = addCategory
+
+                });
+
+            }
+            return BadRequest(new OperationResponse<Category>
+            {
+                Message = "Something went wrong",
+                IsSuccess = true
+            });
+
+        }
+
 
     }
 }
