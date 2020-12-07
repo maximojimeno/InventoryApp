@@ -81,7 +81,5 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
    
-
-
     }
 }

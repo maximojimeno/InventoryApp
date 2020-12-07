@@ -19,7 +19,7 @@ namespace InventaryApp.Server.Controllers
 
         private readonly IProductService _productService;
 
-        private const int PAGE_SIZE = 2;
+        private const int PAGE_SIZE = 10;
 
 
         public ProductController(IProductService productService)

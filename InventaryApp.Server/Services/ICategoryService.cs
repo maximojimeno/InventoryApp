@@ -11,12 +11,12 @@ namespace InventaryApp.Server.Services
 {
    public interface ICategoryService
     {
-        Task<IEnumerable<Category>> GetAllCategotyAsync(string userId);
+        Task<IEnumerable<Category>> GetAllCategoryAsync(string userId);
         Task<Category> GetCategoryById(string id, string userId);
         Task<Category> AddCategoryAsync(string name, string userId);
-        Task<Category> DeleteProductAsync(string id, string userId);
+        Task<Category> DeleteCategoryAsync(string id, string userId);
         Task<Category> EditCategoryAsync(string id, string newName, string userId);
-        IEnumerable<Category> SearchProductAsync(string query, int pageSize, int pageNumber, string userId, out int totalCategory);
+        IEnumerable<Category> SearchCategoryAsync(string query, int pageSize, int pageNumber, string userId, out int totalCategory);
         IEnumerable<Category> GetAllCategoryCollectionAsync(int pageSize, int pageNumber, string userId, out int totalCategory);
 
     }
@@ -30,7 +30,7 @@ namespace InventaryApp.Server.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategotyAsync(string userId)
+        public async Task<IEnumerable<Category>> GetAllCategoryAsync(string userId)
         {
             var allCategory = await _dbContext.Categories
                 .Where(p => !p.Status && p.UserId == userId)
@@ -71,7 +71,7 @@ namespace InventaryApp.Server.Services
                 return null;
             return category;
         }
-        public async Task<Category> DeleteProductAsync(string id, string userId)
+        public async Task<Category> DeleteCategoryAsync(string id, string userId)
         {
             var category = await _dbContext.Categories.FindAsync(id);
             if (category.UserId != userId || category.Status)
@@ -83,7 +83,7 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return category;
         }
-        public IEnumerable<Category> SearchProductAsync(string query, int pageSize, int pageNumber, string userId, out int totalCategory)
+        public IEnumerable<Category> SearchCategoryAsync(string query, int pageSize, int pageNumber, string userId, out int totalCategory)
         {
             // total plans 
             var allCategories = _dbContext.Categories.Where(c => !c.Status && c.UserId == userId && (c.Name.Contains(query)));
