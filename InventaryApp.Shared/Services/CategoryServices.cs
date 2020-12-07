@@ -72,7 +72,7 @@ namespace InventaryApp.Shared.Services
 
         public async Task<CategorySingleResponse> GetCategoryByIdAsync(string id)
         {
-            var response = await client.GetProtectedAsync<CategorySingleResponse>($"{_baseUrl}/api/catgory/{id}");
+            var response = await client.GetProtectedAsync<CategorySingleResponse>($"{_baseUrl}/api/category/{id}");
             return response.Result;
         }
 
