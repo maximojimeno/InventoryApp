@@ -63,7 +63,7 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<ProductSingleResponse> DeletePlanAsync(string id)
+        public async Task<ProductSingleResponse> DeleteProductAsync(string id)
         {
             var response = await client.DeleteProtectedAsync<ProductSingleResponse>($"{_baseUrl}/api/product/{id}");
             return response.Result;

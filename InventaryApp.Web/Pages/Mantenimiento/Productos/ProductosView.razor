@@ -221,7 +221,7 @@ else
     async Task DeleteProduct()
     {
         isBusy = true;
-        var result = await productService.DeletePlanAsync(selectProductId);
+        var result = await productService.DeleteProductAsync(selectProductId);
         if (result.IsSuccess)
         {
             var deleteProduct = product.SingleOrDefault(p => p.Id == selectProductId);

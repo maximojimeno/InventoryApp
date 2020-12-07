@@ -58,7 +58,7 @@ namespace InventaryApp.Server.Services
         public IEnumerable<Bussiness> SearchBussinessAsync(string query, int pageSize, int pageNumber, string userId, out int totalBussiness)
         {
             // total plans 
-            var allBussiness = _dbContext.Bussiness.Where(c => !c.Status && c.UserId == userId && (c.Name.Contains(query)));
+            var allBussiness = _dbContext.Bussiness.Where(b => !b.Status && b.UserId == userId && (b.Code.Contains(query) || b.Name.Contains(query) || b.Owner.Contains(query) ));
 
             totalBussiness = allBussiness.Count();
 
