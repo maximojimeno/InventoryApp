@@ -1,11 +1,13 @@
-﻿t IModalService Modal
+﻿@inject IModalService Modal
+@inject IJSRuntime js
+@inject BrandServices brandService
 
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
             <div>
-                Marcas
+                @Titulo
                 <div class="page-title-subheading">Creas todas las marcas que necesites.</div>
             </div>
         </div>
@@ -18,11 +20,13 @@
     <div class="card-body">
         <EditForm Model="@brand" OnValidSubmit="@SaveBrand">
             <DataAnnotationsValidator />
+            <ValidationSummary />
             <div class="form-row">
                 <div class="col-md-12">
                     <div class="position-relative form-group">
                         <label for="exampleEmail11" class="">Nombre</label>
                         <InputText class="form-control" placeholder="Nombre productos" @bind-Value="brand.Name" />
+                        <ValidationMessage For="@(()=>brand.Name)" />
                     </div>
                 </div>
 
@@ -42,11 +46,105 @@
 @code {
     private BrandViewModel brand = new BrandViewModel();
 
+    bool isBusy = false;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
 
 
-    private void SaveBrand()
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public string MarcasId { get; set; }
+
+    public string Titulo = "Crear Marcas";
+
+    BrandViewModel brandModalEdit { get; set; }
+
+    protected async override Task OnInitializedAsync()
     {
 
+
+
+        if (MarcasId != null)
+        {
+            Titulo = "Editar Marcas";
+            await getBrandById();
+        }
+
     }
+    public async Task SaveBrand()
+
+    {
+        if (MarcasId != null)
+        {
+            await editBrand();
+        }
+        else
+        {
+            var userState = authenticationState.Result;
+            var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+           brandService.AccessToken = AccessToken;
+
+
+            var result = await brandService.BrandPostAsync(brand);
+
+            if (result.IsSuccess)
+            {
+                await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
+                await js.AvisoAlert("Se guardo la marca!", "1500", "center", TiposDeAlertas.success);
+            }
+            else
+            {
+                await BlazoredModal.Close(ModalResult.Cancel());
+                await js.MostrarMensajes("Error", "No se pudo guardar la marca", TiposDeAlertas.error);
+            }
+        }
+
+    }
+
+    private void Limpiar()
+    {
+        brand = new BrandViewModel();
+    }
+
+    async Task getBrandById()
+    {
+        isBusy = true;
+        var result = await brandService.GetBrandByIdAsync(MarcasId);
+        if (result.IsSuccess)
+        {
+            brand.Name = result.Record.Name;
+            brand.Id = MarcasId;
+
+        }
+        else
+        {
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+    }
+
+    async Task editBrand()
+    {
+        isBusy = true;
+        var result = await brandService.EditBrandAsync(brand);
+        if (result.IsSuccess)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"Edito con exito"));
+            await js.AvisoAlert("Se edito la mraca!", "1500", "center", TiposDeAlertas.success);
+        }
+        else
+        {
+            await BlazoredModal.Close(ModalResult.Cancel());
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+
+    }
+
+
 
 }

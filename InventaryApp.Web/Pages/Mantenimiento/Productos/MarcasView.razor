@@ -1,144 +1,248 @@
 ﻿@page "/mantenimiento/marcas"
+@page "/mantenimiento/marcas/{pageNumber:int}"
 @inject IModalService Modal
-@inject IJSRuntime js  
-<div class="app-page-title">
-    <div class="page-title-wrapper">
-        <div class="page-title-heading">
-            <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
-            <div>
-               Marcas
-                <div class="page-title-subheading">Lista de todas las marcas</div>
+@inject IJSRuntime js
+@inject BrandServices brandService
+@attribute [Authorize]
+
+@if (isBusy)
+{
+    <h2> Cargando ......</h2>
+}
+else
+{
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+                <div>
+                   Marcas
+                    <div class="page-title-subheading">Lista de todas las marcas.</div>
+                </div>
             </div>
+            <div class="page-title-actions">
+                <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info" @onclick="@(async () => await modalBrand())">
+                    <i class="fas fa-plus"></i>Agregar Marcas
+                </button>
+            </div>
+
         </div>
-        <div class="page-title-actions">
-            <button class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-info"  @onclick="@(() => Modal.Show<CrearMarcas>("Crear Marcas"))">
-                <i class="fas fa-plus"></i>Agregar Marca
-            </button>
+    </div>
+    <div class="main-card mb-3 card">
+        <div class="card-body" style="padding-top:0px !important">
+            <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row" style=" padding-bottom: 15px !important;">
+                    <div class="col-sm-12 col-md-4">
+
+                    </div>
+
+                    <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-right:0px !important;">
+
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px !important;">
+                                <input type="text" @bind-value="Query" class="form-control" placeholder="Buscar...">
+
+                            </div>
+                            <div class="col-md-3">
+                                <button class="mb-2 mr-2 btn-icon btn btn-primary" @onclick="async() => await getBrand()"><i class="fas fa-search"></i>Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><div class="row">
+                    <div class="col-sm-12">
+                        <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
+                            <thead>
+
+                                <tr role="row">
+
+                                    <th class="sorting" colspan="1" style="width: 65.2px;">Nombre</th>
+                                    <th class="sorting" colspan="1" style="width: 65.2px;">Opciones</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach (var c in brand)
+                                {
+                                    <tr role="row" class="odd">
+
+                                        <td>@c.Name</td>
+
+                                        <td>
+                                            <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(async () => await EditBrand(c.Id))">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="mb-2 mr-2 btn-icon btn btn-danger" @onclick="@(() => selectId(c.Id))">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                            <tfoot>
+                                <tr><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Opciones</th></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="example_paginate" style=" float: right;">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous disabled" id="example_previous">
+                                    <a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                </li>
+                                @for (int i = 1; i <= totalPage; i++)
+                                {
+                                    int page = i;
+                                    @if (page == PageNumber)
+                                    {
+                                        <li class="paginate_button page-item active">
+                                            <button @onclick="async () => await moveToPageAsync(page) " data-dt-idx="1" disabled class="page-link">@i</button>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="paginate_button page-item">
+                                            <button @onclick="async () => await moveToPageAsync(page) " data-dt-idx="1" class="page-link">@i</button>
+                                        </li>
+                                    }
+
+                                }
+
+                                <li class="paginate_button page-item next" id="example_next">
+                                    <a href="#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
-</div>
-
-<div class="main-card mb-3 card">
-    <div class="card-body">
-        <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
-            <div class="row">
-                <div class="col-sm-12 col-md-4">
-                    <div class="dataTables_length" id="example_length">
-                        <label>
-                            Show <select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select> entries
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-md-8" style=" margin-top: 16px;">
-                    <div class="row">
-                        
-                        <div class="col-md-6" style="padding-left: 0px !important;">
-                            <input type="text" class="form-control" placeholder="Buscar...">
-
-                        </div>
-                        <div class="col-md-3">
-                            <button class="mb-2 mr-2 btn-icon btn btn-primary"><i class="fas fa-search"></i>Buscar</button>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="row">
-                <div class="col-sm-12">
-                    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
-                        <thead>
-                            <tr role="row">
-                                <th class="sorting_asc" colspan="1" style="width: 121.2px;">Id</th>
-                                <th class="sorting" colspan="1" style="width: 193.2px;">Nombre</th>
-                                <th class="sorting" colspan="1" style="width: 65.2px;">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr role="row" class="odd">
-                                <td>1</td>
-                                <td>Bebidas</td>
-                              
-                                <td>
-                                    <button class="mb-2 mr-2 btn-icon btn btn-success" @onclick="@(() => Modal.Show<CrearMarcas>("Editar Marca"))">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="mb-2 mr-2 btn-icon btn btn-danger"  @onclick="@(() => mostrar())">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                         
-                        </tbody>
-                        <tfoot>
-                            <tr><th rowspan="1" colspan="1">Id</th><th rowspan="1" colspan="1">Nombre</th><th rowspan="1" colspan="1">Opciones</th></tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
-                        Showing 1 to 10 of 57 entries
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate" style=" float: right;">
-                        <ul class="pagination">
-                            <li class="paginate_button page-item previous disabled" id="example_previous">
-                                <a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                            </li>
-                            <li class="paginate_button page-item active">
-                                <a href="#" aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                            </li>
-                            <li class="paginate_button page-item ">
-                                <a href="#" aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                            </li>
-                            <li class="paginate_button page-item ">
-                                <a href="#" aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                            </li>
-                            <li class="paginate_button page-item ">
-                                <a href="#" aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-                            </li>
-                            <li class="paginate_button page-item next" id="example_next">
-                                <a href="#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+}
 
 @code {
- 
+
+    private string TitleModal;
+    bool isBusy = false;
+    [Parameter]
+    public int? PageNumber { get; set; }
+    public string Query { get; set; }
 
 
-    private void AsignarTituloModal(String titulo)
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    List<BrandViewModel> brand = new List<BrandViewModel>();
+    int totalPage = 1;
+
+    protected override async Task OnInitializedAsync()
     {
-     
 
+        await getBrand();
     }
 
-    async Task mostrar()
+    async Task getBrand()
     {
-        if(await js.Comfirmar("Eliminar", "Esta seguro que desea eliminar", TiposDeAlertas.error))
+        isBusy = true;
+        var userState = authenticationState.Result;
+        brandService.AccessToken = userState.User.FindFirst("AccessToken").Value;
+        if (PageNumber == null)
+            PageNumber = 1;
+       BrandCollectionPagingResponse result;
+
+        if (string.IsNullOrWhiteSpace(Query))
+            result = await brandService.GetAllBrandByPageAsync(PageNumber.Value);
+        else
+            result = await brandService.SearchBrandByPageAsync(Query, PageNumber.Value);
+        if (result.Count % result.PageSize == 0)
+            totalPage = result.Count / result.PageSize;
+        else
+            totalPage = (result.Count / result.PageSize) + 1;
+       brand = result.Records.ToList();
+
+        isBusy = false;
+    }
+
+
+    async Task moveToPageAsync(int pageNumber)
+    {
+        PageNumber = pageNumber;
+        await getBrand();
+    }
+
+
+   
+
+    async Task modalBrand()
+    {
+        var forModal = Modal.Show<CrearMarcas>("Crear Marcas");
+        var result = await forModal.Result;
+
+        if (!result.Cancelled)
         {
-            await js.MostrarMensajes("Listo", "Producto elimidado", TiposDeAlertas.success);
+            await OnInitializedAsync();
+        }
+    }
+
+
+    async Task EditBrand(string brandId)
+    {
+
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(CrearMarcas.MarcasId), brandId);
+
+        var forModal = Modal.Show<CrearMarcas>("Editar Marcas", parameters);
+        var result = await forModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await OnInitializedAsync();
+        }
+
+    }
+    string selectBrandId = string.Empty;
+    async Task selectId(string id)
+    {
+
+        if (await js.Comfirmar("Eliminar", "Esta seguro que desea eliminar", TiposDeAlertas.error))
+        {
+            selectBrandId = id;
+            await DeleteBrand();
         }
         else
         {
-            await js.MostrarMensajes("UUUPS", "Producto sin eliminar", TiposDeAlertas.warning);
+            await js.MostrarMensajes("UUUPS", "Marcas sin eliminar", TiposDeAlertas.warning);
         }
     }
+
+    async Task DeleteBrand()
+    {
+        isBusy = true;
+        var result = await brandService.DeleteBrandAsync(selectBrandId);
+        if (result.IsSuccess)
+        {
+            var deleteBrand = brand.SingleOrDefault(p => p.Id == selectBrandId);
+            brand.Remove(deleteBrand);
+            await js.AvisoAlert("Marca borrado con exito!", "1500", "center", TiposDeAlertas.success);
+            await OnInitializedAsync();
+
+        }
+        else
+        {
+            await js.AvisoAlert("Error!", "1500", "center", TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+    }
+
 
 }
