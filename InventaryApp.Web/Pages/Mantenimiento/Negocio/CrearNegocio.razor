@@ -1,0 +1,201 @@
+﻿@inject IModalService Modal
+@inject IJSRuntime js
+@inject BussinessServices bussinessServices
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+            <div>
+                @Titulo
+                <div class="page-title-subheading">Creas todas los negocios que necesites.</div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="main-card mb-3 card">
+    <div class="card-body">
+        <EditForm Model="@negocio" OnValidSubmit="@SaveNegocio">
+            <DataAnnotationsValidator />
+         
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Codigo</label>
+                        <InputText class="form-control" placeholder="Codigo negocio" @bind-Value="negocio.Code" />
+                        <ValidationMessage For="@(()=>negocio.Code)" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Nombre</label>
+                        <InputText class="form-control" placeholder="Nombre negocio" @bind-Value="negocio.Name" />
+                        <ValidationMessage For="@(()=>negocio.Name)" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Direccion</label>
+                        <InputText class="form-control" placeholder="ej: Tenare" @bind-Value="negocio.Address" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Email</label>
+                        <InputText class="form-control" placeholder="ejemplo@gmail.com" @bind-Value="negocio.Email" />
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Propietario</label>
+                        <InputText class="form-control" placeholder="Nombre propietario" @bind-Value="negocio.Owner" />
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Telefono Propietario</label>
+                        <InputText class="form-control" placeholder="Numero de telefono" @bind-Value="negocio.OwnerPhone" />
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Telefono Negocio</label>
+                        <InputText class="form-control" placeholder="Numero de telefono" @bind-Value="negocio.PhoneNumber" />
+                        <ValidationMessage For="@(()=>negocio.PhoneNumber)" />
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <button class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
+            <button class="mt-2 btn btn-danger" style=" float: right;">Limpiar</button>
+        </EditForm>
+
+    </div>
+
+</div>
+
+
+@code {
+    private BussinessViewModel negocio = new BussinessViewModel();
+
+    bool isBusy = false;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public string NegocioId { get; set; }
+
+    public string Titulo = "Crear Negocio";
+
+    BussinessViewModel negocioModalEdit { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+
+
+        if (NegocioId != null)
+        {
+            Titulo = "Editar Negocio";
+            await getNegocioById();
+        }
+
+    }
+    public async Task SaveNegocio()
+
+    {
+        if (NegocioId != null)
+        {
+            await editNegocio();
+        }
+        else
+        {
+            var userState = authenticationState.Result;
+            var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+            bussinessServices.AccessToken = AccessToken;
+
+
+            var result = await bussinessServices.BussinessPostAsync(negocio);
+
+            if (result.IsSuccess)
+            {
+                await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
+                await js.AvisoAlert("Se guardo el negocio!", "1500", "center", TiposDeAlertas.success);
+            }
+            else
+            {
+                await BlazoredModal.Close(ModalResult.Cancel());
+                await js.MostrarMensajes("Error", "No se pudo guardar el negocio", TiposDeAlertas.error);
+            }
+        }
+
+    }
+
+    private void Limpiar()
+    {
+        negocio = new BussinessViewModel();
+    }
+
+    async Task getNegocioById()
+    {
+        isBusy = true;
+        var result = await bussinessServices.GetBussinessByIdAsync(NegocioId);
+        if (result.IsSuccess)
+        {
+            negocio.Name = result.Record.Name;
+            negocio.Code = result.Record.Code;
+            negocio.Email = result.Record.Email;
+            negocio.Address = result.Record.Address;
+            negocio.Owner = result.Record.Owner;
+            negocio.OwnerPhone = result.Record.OwnerPhone;
+            negocio.PhoneNumber = result.Record.PhoneNumber;
+            negocio.Id = NegocioId;
+
+        }
+        else
+        {
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+    }
+
+    async Task editNegocio()
+    {
+        isBusy = true;
+        var result = await bussinessServices.EditBussinessAsync(negocio);
+        if (result.IsSuccess)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"Edito con exito"));
+            await js.AvisoAlert("Se edito el negocio!", "1500", "center", TiposDeAlertas.success);
+        }
+        else
+        {
+            await BlazoredModal.Close(ModalResult.Cancel());
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+
+    }
+
+
+
+}

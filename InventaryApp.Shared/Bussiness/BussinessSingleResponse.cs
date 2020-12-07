@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InventaryApp.Shared.Bussiness
 {
-    public class BussinessSingleResponse
+    public class BussinessSingleResponse : BaseApiResponse
     {
         public BussinessViewModel Record { get; set; }
     }

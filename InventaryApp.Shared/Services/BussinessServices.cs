@@ -45,12 +45,12 @@ namespace InventaryApp.Shared.Services
 
             return response.Result;
         }
-        public async Task<BussinessSingleResponse> DeletePlanAsync(string id)
+        public async Task<BussinessSingleResponse> DeleteBussinessAsync(string id)
         {
             var response = await client.DeleteProtectedAsync<BussinessSingleResponse>($"{_baseUrl}/api/bussiness/{id}");
             return response.Result;
         }
-        public async Task<BussinessSingleResponse> CategoryPostAsync(BussinessViewModel model)
+        public async Task<BussinessSingleResponse> BussinessPostAsync(BussinessViewModel model)
         {
 
             var response = await client.SendFormProtectedAsync<BussinessSingleResponse>($"{_baseUrl}/api/bussiness", ActionType.POST,
