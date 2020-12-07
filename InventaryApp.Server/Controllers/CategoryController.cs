@@ -147,7 +147,7 @@ namespace InventaryApp.Server.Controllers
             {
                 Count = totalCategory,
                 IsSuccess = true,
-                Message = $"Product of '{query}' received successfully!",
+                Message = $"Category of '{query}' received successfully!",
                 OperationDate = DateTime.UtcNow,
                 PageSize = PAGE_SIZE,
                 Page = page,
@@ -176,7 +176,7 @@ namespace InventaryApp.Server.Controllers
             }
 
 
-            return BadRequest(new OperationResponse<Product>
+            return BadRequest(new OperationResponse<Category>
             {
                 Message = "Something went wrong",
                 IsSuccess = false
