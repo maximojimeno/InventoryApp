@@ -32,6 +32,11 @@ namespace InventaryApp.Web
                 return new CategoryServices(URL);
             });
 
+            builder.Services.AddScoped<BussinessServices>(s =>
+            {
+                return new BussinessServices(URL);
+            });
+
 
             builder.Services.AddScoped<BrandServices>(s =>
             {
