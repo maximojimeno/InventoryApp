@@ -1,0 +1,220 @@
+﻿@inject IModalService Modal
+@inject AccountServices accountService
+@inject IJSRuntime js
+@inject BussinessServices bussinessServices
+
+
+@attribute [Authorize]
+
+
+<EditForm Model="cuenta" OnValidSubmit="SaveCuenta">
+    <DataAnnotationsValidator />
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+                <div>
+                    @Titulo
+                    <div class="page-title-subheading">Creas todos las cuentas que necesites.</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="examplePassword11" class="">Codigo</label>
+                        <InputText class="form-control" placeholder="Codigo del producto" @bind-Value="cuenta.Code" />
+                        <ValidationMessage For="@(()=>cuenta.Code)" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Nombre</label>
+                        <InputText class="form-control" placeholder="Nombre productos" @bind-Value="cuenta.Name" />
+                        <ValidationMessage For="@(()=>cuenta.Name)" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleAddress" class="">Negocio</label>
+                        <InputSelect @bind-Value="cuenta.BussinessId" class="form-control">
+
+                            <option value="" selected>---------- Select----------</option>
+                            @*
+        @foreach (var cat in listCategory)
+        {
+            <option value="@cat.Id">@cat.Name</option>
+        }
+                            *@
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>cuenta.BussinessId)" />
+                    </div>
+                </div>
+              
+            </div>
+
+            <div class="form-row">
+              
+            
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="exampleState" class="">Tipo</label>
+                        <InputSelect @bind-Value="cuenta.Type" class="form-control">
+                            <option value="" selected>---------- Select----------</option>
+                            @foreach (var desc in Tipo)
+                            {
+                                <option value="@desc">@desc</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>cuenta.Type)" />
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit" class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
+            <button class="mt-2 btn btn-danger" @onclick="@(()=> Limpiar() )" style=" float: right;">Limpiar</button>
+
+
+        </div>
+
+    </div>
+</EditForm>
+
+@code {
+    AccountViewModel cuenta = new AccountViewModel();
+    bool isBusy = false;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    List<BussinessViewModel> negocios = new List<BussinessViewModel>();
+
+
+
+    private String[] Tipo = { "Cuenta por cobrar", "Cuenta por pagar" };
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public string CuentaId { get; set; }
+
+    public string Titulo = "Crear Cuenta";
+
+    AccountViewModel cuentaModalEdit { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var userState = authenticationState.Result;
+        var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+        bussinessServices.AccessToken = AccessToken;
+
+
+        var result = await bussinessServices.GetAllBussinessByPageAsync();
+        listCuenta = result.Records.ToList();
+
+    
+
+
+
+        if (CuentaId != null)
+        {
+            Titulo = "Editar Cuenta";
+            await getCuentaById();
+        }
+
+
+
+
+    }
+
+
+    public async Task SaveCuenta()
+
+    {
+        if (CuentaId != null)
+        {
+            await editCuenta();
+        }
+        else
+        {
+            var userState = authenticationState.Result;
+            var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+            accountService.AccessToken = AccessToken;
+
+
+            var result = await accountService.AccountPostAsync(cuenta);
+
+            if (result.IsSuccess)
+            {
+                await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
+                await js.AvisoAlert("Se guardo la cuenta!", "1500", "center", TiposDeAlertas.success);
+            }
+            else
+            {
+                await BlazoredModal.Close(ModalResult.Cancel());
+                await js.MostrarMensajes("Error", "No se pudo guardar el producto", TiposDeAlertas.error);
+            }
+        }
+
+    }
+
+    private void Limpiar()
+    {
+        cuenta = new AccountViewModel();
+    }
+
+    async Task getCuentaById()
+    {
+        isBusy = true;
+        var result = await accountService.GetAccountByIdAsync(CuentaId);
+        if (result.IsSuccess)
+        {
+            cuenta.Name = result.Record.Name;
+            cuenta.Code = result.Record.Code;
+            cuenta.Type = result.Record.Type;
+            cuenta.BussinessId = result.Record.BussinessId;
+            cuenta.Id = CuentaId;
+           
+        }
+        else
+        {
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+    }
+
+    async Task editCuenta()
+    {
+        isBusy = true;
+        var result = await accountService.EditAccountAsync(cuenta);
+        if (result.IsSuccess)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"Edito con exito"));
+            await js.AvisoAlert("Se edito la cuenta!", "1500", "center", TiposDeAlertas.success);
+        }
+        else
+        {
+            await BlazoredModal.Close(ModalResult.Cancel());
+            await js.MostrarMensajes("Error", result.Message, TiposDeAlertas.error);
+        }
+
+        isBusy = false;
+
+    }
+
+
+}

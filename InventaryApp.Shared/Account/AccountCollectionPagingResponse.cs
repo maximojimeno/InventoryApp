@@ -12,4 +12,5 @@ namespace InventaryApp.Shared.Account
         public int? NextPage { get; set; }
         public int Count { get; set; }
     }
+
 }
