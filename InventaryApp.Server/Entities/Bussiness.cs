@@ -10,8 +10,9 @@ namespace InventaryApp.Server.Entities
     public class Bussiness : Record
     {
         public Bussiness()
-        {
+        { 
             Accounts = new List<Account>();
+            OpenInventaries = new List<OpenInventary>();
         }
         [Required]
         public string Code { get; set; }
@@ -24,5 +25,6 @@ namespace InventaryApp.Server.Entities
         public string Owner { get; set; }
         public string OwnerPhone { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<OpenInventary> OpenInventaries { get; set; }
     }
 }

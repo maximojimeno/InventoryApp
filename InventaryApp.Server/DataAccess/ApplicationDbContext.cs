@@ -18,6 +18,7 @@ namespace InventaryApp.Server.DataAccess
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Bussiness> Bussiness { get; set; }
         public DbSet <Account> Accounts { get; set; }
+        public DbSet <OpenInventary> OpenInventaries { get; set; }
     }
 
 

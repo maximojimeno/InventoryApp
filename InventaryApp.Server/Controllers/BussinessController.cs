@@ -26,6 +26,25 @@ namespace InventaryApp.Server.Controllers
             _bussinessService = bussinessService;
         }
 
+
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Bussiness>))]
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> Get()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var bussinesses = await _bussinessService.GetAllBussinesAsync(userId);
+
+            return Ok(new CollectionResponse<Bussiness>
+            {
+                IsSuccess = true,
+                Message = "Bussiness received successfully!",
+                OperationDate = DateTime.UtcNow,
+                Records = bussinesses
+            });
+        }
+
         [ProducesResponseType(200, Type = typeof(OperationResponse<Bussiness>))]
         [ProducesResponseType(400, Type = typeof(OperationResponse<Bussiness>))]
         [HttpGet("{id}")]

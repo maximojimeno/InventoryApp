@@ -12,6 +12,7 @@ namespace InventaryApp.Server.Services
 
 
     {
+        Task<IEnumerable<Bussiness>> GetAllBussinesAsync(string userId);
         Task<Bussiness> GetBussinessById(string id, string userId);
         IEnumerable<Bussiness> GetAllBussinessCollectionAsync(int pageSize, int pageNumber, string userId, out int totalBussiness);
         Task<Bussiness> DeleteBussinessAsync(string id, string userId);
@@ -28,7 +29,13 @@ namespace InventaryApp.Server.Services
         {
             _dbContext = dbContext;
         }
-       
+        public async Task<IEnumerable<Bussiness>> GetAllBussinesAsync(string userId)
+        {
+            var allBussiness = await _dbContext.Bussiness
+                .Where(p => !p.Status && p.UserId == userId)
+                .ToListAsync();
+            return allBussiness;
+        }
         public async Task<Bussiness> GetBussinessById(string id, string userId)
         {
             var bussiness = await _dbContext.Bussiness.FindAsync(id);

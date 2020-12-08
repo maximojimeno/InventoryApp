@@ -1,5 +1,6 @@
 ﻿using InventaryApp.Server.DataAccess;
 using InventaryApp.Server.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ namespace InventaryApp.Server.Services
 {
     public interface IAccountService
     {
+        Task<IEnumerable<Account>> GetAllAccountAsync(string userId);
         Task<Account> AddAccountAsync(string code, string name, string type, string bussinessId, string userId);
         Task<Account> EditAccountAsync(string id, string newCode, string newName, string newType, string newBussinessId, string userId);
         Task<Account> GetAccountById(string id, string userId);
         Task<Account> DeleteAccountAsync(string id, string userId);
-        IEnumerable<Account> GetAllAccountAsync(int pageSize, int pageNumber, string userId, out int totalAccounts);
+        IEnumerable<Account> GetAllAccountCollectionAsync(int pageSize, int pageNumber, string userId, out int totalAccounts);
         IEnumerable<Account> SearchAccountAsync(string query, int pageSize, int pageNumber, string userId, out int totalAccounts);
     }
 
@@ -24,7 +26,13 @@ namespace InventaryApp.Server.Services
         {
             _dbContext = dbContext;
         }
-
+        public async Task<IEnumerable<Account>> GetAllAccountAsync(string userId)
+        {
+            var allAccounts = await _dbContext.Accounts
+                .Where(p => !p.Status && p.UserId == userId)
+                .ToListAsync();
+            return allAccounts;
+        }
         public async Task<Account> AddAccountAsync(string code, string name,string type,string bussinessId, string userId)
         {
             var account = new Account
@@ -74,7 +82,7 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return account;
         }
-        public IEnumerable<Account> GetAllAccountAsync(int pageSize, int pageNumber, string userId, out int totalAccounts)
+        public IEnumerable<Account> GetAllAccountCollectionAsync(int pageSize, int pageNumber, string userId, out int totalAccounts)
         {
             var allAccounts = _dbContext.Accounts.Where(a => !a.Status && a.UserId == userId);
             totalAccounts = allAccounts.Count();

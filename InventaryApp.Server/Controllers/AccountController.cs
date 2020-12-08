@@ -52,13 +52,31 @@ namespace InventaryApp.Server.Controllers
 
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Account>))]
         [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> Get()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var accounts = await _accountService.GetAllAccountAsync(userId);
+
+            return Ok(new CollectionResponse<Account>
+            {
+                IsSuccess = true,
+                Message = "Accounts received successfully!",
+                OperationDate = DateTime.UtcNow,
+                Records = accounts
+            });
+        }
+
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Account>))]
+        [HttpGet]
         public IActionResult Get(int page)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             int totalAccounts = 0;
             if (page == 0)
                 page = 1;
-            var accounts = _accountService.GetAllAccountAsync(PAGE_SIZE, page, userId, out totalAccounts);
+            var accounts = _accountService.GetAllAccountCollectionAsync(PAGE_SIZE, page, userId, out totalAccounts);
 
             int totalPages = 0;
             if (totalAccounts % PAGE_SIZE == 0)

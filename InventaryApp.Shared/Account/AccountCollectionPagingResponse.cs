@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InventaryApp.Shared.Account
 {
-    class AccountCollectionPagingResponse
+    public class AccountCollectionPagingResponse
     {
         public AccountViewModel[] Records { get; set; }
         public int Page { get; set; }
