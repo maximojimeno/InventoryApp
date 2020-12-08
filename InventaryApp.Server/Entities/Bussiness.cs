@@ -20,6 +20,7 @@ namespace InventaryApp.Server.Entities
             OwnerPhone = string.Empty;
             Accounts = new List<Account>();
             OpenInventaries = new List<OpenInventary>();
+            Inventaries = new List<Inventary>();
         }
         [Required]
         [StringLength(10)]
@@ -40,5 +41,6 @@ namespace InventaryApp.Server.Entities
         public string OwnerPhone { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<OpenInventary> OpenInventaries { get; set; }
+        public virtual ICollection<Inventary> Inventaries { get; set; }
     }
 }

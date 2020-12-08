@@ -23,8 +23,8 @@ namespace InventaryApp.Server.Controllers
             _brandService = brandService;
         }
 
-        [ProducesResponseType(200, Type = typeof(OperationResponse<Brand>))]
-        [ProducesResponseType(400, Type = typeof(OperationResponse<Brand>))]
+        [ProducesResponseType(200, Type = typeof(OperationResponse<BrandViewModel>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<BrandViewModel>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -47,7 +47,7 @@ namespace InventaryApp.Server.Controllers
             });
         }
 
-        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Brand>))]
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<BrandViewModel>))]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -65,7 +65,7 @@ namespace InventaryApp.Server.Controllers
             });
         }
 
-        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Brand>))]
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<BrandViewModel>))]
         [HttpGet]
         [Route("GetAll")]
         public IActionResult GetAll(int page)
@@ -94,8 +94,8 @@ namespace InventaryApp.Server.Controllers
             });
         }
 
-        [ProducesResponseType(200, Type = typeof(Brand))]
-        [ProducesResponseType(400, Type = typeof(Brand))]
+        [ProducesResponseType(200, Type = typeof(BrandViewModel))]
+        [ProducesResponseType(400, Type = typeof(BrandViewModel))]
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromForm] BrandViewModel model)
         {
@@ -123,7 +123,7 @@ namespace InventaryApp.Server.Controllers
 
         }
 
-        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Category>))]
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<BrandViewModel>))]
         [HttpGet("query={query}/page={page}")]
         public IActionResult Get(string query, int page)
         {
@@ -151,8 +151,8 @@ namespace InventaryApp.Server.Controllers
             });
         }
 
-        [ProducesResponseType(200, Type = typeof(OperationResponse<Brand>))]
-        [ProducesResponseType(400, Type = typeof(OperationResponse<Brand>))]
+        [ProducesResponseType(200, Type = typeof(OperationResponse<BrandViewModel>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<BrandViewModel>))]
         [HttpPut]
         public async Task<IActionResult> Put([FromForm] BrandViewModel model)
         {
@@ -179,7 +179,7 @@ namespace InventaryApp.Server.Controllers
             });
 
         }
-        [ProducesResponseType(200, Type = typeof(OperationResponse<Brand>))]
+        [ProducesResponseType(200, Type = typeof(OperationResponse<BrandViewModel>))]
         [ProducesResponseType(404)]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> Delete(string id)

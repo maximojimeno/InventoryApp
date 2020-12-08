@@ -17,6 +17,7 @@ namespace InventaryApp.Server.Entities
         public string Type { get; set; }
         public virtual Bussiness Bussiness { get; set; }
         [ForeignKey("Bussiness")]
+        [Required]
         public string BussinessId { get; set; }
     }
 }

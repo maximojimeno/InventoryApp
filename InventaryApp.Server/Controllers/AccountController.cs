@@ -1,13 +1,10 @@
-﻿ using InventaryApp.Server.Entities;
+﻿using InventaryApp.Server.Entities;
 using InventaryApp.Server.Services;
 using InventaryApp.Shared;
 using InventaryApp.Shared.Account;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -26,8 +23,8 @@ namespace InventaryApp.Server.Controllers
             _accountService = accountService;
         }
 
-        [ProducesResponseType(200, Type = typeof(OperationResponse<Account>))]
-        [ProducesResponseType(400, Type = typeof(OperationResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(OperationResponse<AccountViewModel>))]
+        [ProducesResponseType(400, Type = typeof(OperationResponse<AccountViewModel>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -67,7 +64,7 @@ namespace InventaryApp.Server.Controllers
             });
         }
 
-        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<AccountViewModel>))]
         [HttpGet]
         [Route("GetAll")]
         public IActionResult Get(int page)
@@ -97,8 +94,8 @@ namespace InventaryApp.Server.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(Account))]
-        [ProducesResponseType(400, Type = typeof(Account))]
+        [ProducesResponseType(200, Type = typeof(AccountViewModel))]
+        [ProducesResponseType(400, Type = typeof(AccountViewModel))]
         public async Task<IActionResult> PostAsync([FromForm] AccountViewModel model)
         {
 
@@ -153,7 +150,7 @@ namespace InventaryApp.Server.Controllers
 
         }
 
-        [ProducesResponseType(200, Type = typeof(OperationResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(OperationResponse<AccountViewModel>))]
         [ProducesResponseType(404)]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> Delete(string id)
@@ -175,7 +172,7 @@ namespace InventaryApp.Server.Controllers
 
 
         }
-        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Account>))]
+        [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<AccountViewModel>))]
         [HttpGet("query={query}/page={page}")]
         public IActionResult Get(string query, int page)
         {

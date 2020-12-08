@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using InventaryApp.Server.Entities;
 using InventaryApp.Server.Models;
-using InventaryApp.Server.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventaryApp.Server.DataAccess
 {
@@ -19,6 +15,7 @@ namespace InventaryApp.Server.DataAccess
         public DbSet<Bussiness> Bussiness { get; set; }
         public DbSet <Account> Accounts { get; set; }
         public DbSet <OpenInventary> OpenInventaries { get; set; }
+        public DbSet <Inventary> inventaries { get; set; }
     }
 
 

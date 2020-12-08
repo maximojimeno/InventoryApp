@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InventaryApp.Server.Migrations
 {
-    public partial class OpenInventary : Migration
+    public partial class Inventay : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -216,7 +216,7 @@ namespace InventaryApp.Server.Migrations
                     Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    BussinessId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    BussinessId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
@@ -230,7 +230,7 @@ namespace InventaryApp.Server.Migrations
                         column: x => x.BussinessId,
                         principalTable: "Bussiness",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,6 +294,68 @@ namespace InventaryApp.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "inventaries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OpenInventaryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    BussinessId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_inventaries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_inventaries_Bussiness_BussinessId",
+                        column: x => x.BussinessId,
+                        principalTable: "Bussiness",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_inventaries_OpenInventaries_OpenInventaryId",
+                        column: x => x.OpenInventaryId,
+                        principalTable: "OpenInventaries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InventaryDetails",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    InventaryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Count = table.Column<double>(type: "float", nullable: false),
+                    Cost = table.Column<double>(type: "float", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventaryDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InventaryDetails_inventaries_InventaryId",
+                        column: x => x.InventaryId,
+                        principalTable: "inventaries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InventaryDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_BussinessId",
                 table: "Accounts",
@@ -339,6 +401,26 @@ namespace InventaryApp.Server.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_inventaries_BussinessId",
+                table: "inventaries",
+                column: "BussinessId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_inventaries_OpenInventaryId",
+                table: "inventaries",
+                column: "OpenInventaryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InventaryDetails_InventaryId",
+                table: "InventaryDetails",
+                column: "InventaryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InventaryDetails_ProductId",
+                table: "InventaryDetails",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OpenInventaries_BussinessId",
                 table: "OpenInventaries",
                 column: "BussinessId");
@@ -375,10 +457,7 @@ namespace InventaryApp.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "OpenInventaries");
-
-            migrationBuilder.DropTable(
-                name: "Products");
+                name: "InventaryDetails");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -387,13 +466,22 @@ namespace InventaryApp.Server.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Bussiness");
+                name: "inventaries");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "OpenInventaries");
 
             migrationBuilder.DropTable(
                 name: "Brands");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Bussiness");
         }
     }
 }

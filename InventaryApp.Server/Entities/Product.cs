@@ -35,6 +35,6 @@ namespace InventaryApp.Server.Entities
         [Required]
         [ForeignKey("Category")]
         public string CategoryId { get; set; }
-
+       
     }
 }
