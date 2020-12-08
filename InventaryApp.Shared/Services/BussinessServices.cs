@@ -22,6 +22,11 @@ namespace InventaryApp.Shared.Services
                 client.AccessToken = value;
             }
         }
+        public async Task<BussinessCollectionResponse> GetAllBussinessAsync()
+        {
+            var response = await client.GetProtectedAsync<BussinessCollectionResponse>($"{_baseUrl}/api/bussiness/");
+            return response.Result;
+        }
         public async Task<BussinessSingleResponse> GetBussinessByIdAsync(string id)
         {
             var response = await client.GetProtectedAsync<BussinessSingleResponse>($"{_baseUrl}/api/bussiness/{id}");
@@ -66,7 +71,7 @@ namespace InventaryApp.Shared.Services
         }
         public async Task<BussinessCollectionPagingResponse> GetAllBussinessByPageAsync(int page = 1)
         {
-            var response = await client.GetProtectedAsync<BussinessCollectionPagingResponse>($"{_baseUrl}/api/bussiness?page={page}");
+            var response = await client.GetProtectedAsync<BussinessCollectionPagingResponse>($"{_baseUrl}/api/bussiness/GetAll?page={page}");
             return response.Result;
         }
         public async Task<BussinessCollectionPagingResponse> SearchBussinessByPageAsync(string query, int page = 1)

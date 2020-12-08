@@ -25,7 +25,11 @@ namespace InventaryApp.Shared.Services
                 client.AccessToken = value;
             }
         }
-
+        public async Task<AccountCollectionResponse> GetAllBussinessAsync()
+        {
+            var response = await client.GetProtectedAsync<AccountCollectionResponse>($"{_baseUrl}/api/account/");
+            return response.Result;
+        }
         public async Task<AccountSingleResponse> GetAccountByIdAsync(string id)
         {
             var response = await client.GetProtectedAsync<AccountSingleResponse>($"{_baseUrl}/api/account/{id}");
@@ -68,7 +72,7 @@ namespace InventaryApp.Shared.Services
 
         public async Task<AccountCollectionPagingResponse> GetAllAccountByPageAsync(int page = 1)
         {
-            var response = await client.GetProtectedAsync<AccountCollectionPagingResponse>($"{_baseUrl}/api/account?page={page}");
+            var response = await client.GetProtectedAsync<AccountCollectionPagingResponse>($"{_baseUrl}/api/account/GetAll?page={page}");
             return response.Result;
         }
 

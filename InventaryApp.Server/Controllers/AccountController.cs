@@ -52,7 +52,6 @@ namespace InventaryApp.Server.Controllers
 
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Account>))]
         [HttpGet]
-        [Route("GetAll")]
         public async Task<IActionResult> Get()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -70,6 +69,7 @@ namespace InventaryApp.Server.Controllers
 
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<Account>))]
         [HttpGet]
+        [Route("GetAll")]
         public IActionResult Get(int page)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
