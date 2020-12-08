@@ -25,7 +25,7 @@ namespace InventaryApp.Shared.Services
                 client.AccessToken = value;
             }
         }
-        public async Task<AccountCollectionResponse> GetAllBussinessAsync()
+        public async Task<AccountCollectionResponse> GetAllAccountAsync()
         {
             var response = await client.GetProtectedAsync<AccountCollectionResponse>($"{_baseUrl}/api/account/");
             return response.Result;

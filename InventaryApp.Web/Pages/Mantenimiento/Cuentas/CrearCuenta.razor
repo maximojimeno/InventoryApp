@@ -52,12 +52,12 @@
                         <InputSelect @bind-Value="cuenta.BussinessId" class="form-control">
 
                             <option value="" selected>---------- Select----------</option>
-                            @*
-        @foreach (var cat in listCategory)
+                        
+        @foreach (var cat in listNegocio)
         {
             <option value="@cat.Id">@cat.Name</option>
         }
-                            *@
+                            
                         </InputSelect>
                         <ValidationMessage For="@(()=>cuenta.BussinessId)" />
                     </div>
@@ -102,7 +102,7 @@
     List<BussinessViewModel> negocios = new List<BussinessViewModel>();
 
 
-
+    List<BussinessViewModel> listNegocio = new List<BussinessViewModel>();
     private String[] Tipo = { "Cuenta por cobrar", "Cuenta por pagar" };
 
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
@@ -121,10 +121,10 @@
         bussinessServices.AccessToken = AccessToken;
 
 
-        var result = await bussinessServices.GetAllBussinessByPageAsync();
-        listCuenta = result.Records.ToList();
+        var result = await bussinessServices.GetAllBussinessAsync();
+        listNegocio = result.Records.ToList();
 
-    
+
 
 
 
@@ -187,7 +187,7 @@
             cuenta.Type = result.Record.Type;
             cuenta.BussinessId = result.Record.BussinessId;
             cuenta.Id = CuentaId;
-           
+
         }
         else
         {
