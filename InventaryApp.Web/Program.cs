@@ -46,6 +46,11 @@ namespace InventaryApp.Web
             {
                 return new AccountServices(URL);
             });
+            builder.Services.AddScoped<OpenInventaryServices>(s =>
+            {
+                return new OpenInventaryServices(URL);
+            });
+
 
             builder.Services.AddBlazoredModal();
             builder.Services.AddBlazoredLocalStorage();

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InventaryApp.Shared.OpenInventary
 {
-    class OpenInventaryCollectionPagingResponse 
+    public class OpenInventaryCollectionPagingResponse 
     {
         public OpenInventaryViewModel[] Records { get; set; }
         public int Page { get; set; }

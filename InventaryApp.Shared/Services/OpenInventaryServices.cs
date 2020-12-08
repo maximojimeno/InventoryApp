@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InventaryApp.Shared.Services
 {
-    class OpenInventaryServices 
+    public class OpenInventaryServices 
     {
         private readonly string _baseUrl;
 
@@ -46,7 +46,7 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<OpenInventarySingleResponse> EditAccountAsync(OpenInventaryViewModel model)
+        public async Task<OpenInventarySingleResponse> EditOpenInventaryAsync(OpenInventaryViewModel model)
         {
             var formKeyValues = new List<FormKeyValue>()
             {
@@ -64,12 +64,12 @@ namespace InventaryApp.Shared.Services
             return response.Result;
         }
 
-        public async Task<OpenInventaryCollectionPagingResponse> GetAllAccountByPageAsync(int page = 1)
+        public async Task<OpenInventaryCollectionPagingResponse> GetAllOpenInventaryByPageAsync(int page = 1)
         {
             var response = await client.GetProtectedAsync<OpenInventaryCollectionPagingResponse>($"{_baseUrl}/api/openinventary/GetAll?page={page}");
             return response.Result;
         }
-        public async Task<OpenInventaryCollectionPagingResponse> SearchAccountByPageAsync(string query, int page = 1)
+        public async Task<OpenInventaryCollectionPagingResponse> SearchOpenInventaryByPageAsync(string query, int page = 1)
         {
             var response = await client.GetProtectedAsync<OpenInventaryCollectionPagingResponse>($"{_baseUrl}/api/openinventary/query={query}/page={page}");
             return response.Result;

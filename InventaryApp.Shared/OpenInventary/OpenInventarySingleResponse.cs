@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InventaryApp.Shared.OpenInventary
 {
-    class OpenInventarySingleResponse : BaseApiResponse
+    public class OpenInventarySingleResponse : BaseApiResponse
     {
         public OpenInventaryViewModel Record { get; set; }
     }

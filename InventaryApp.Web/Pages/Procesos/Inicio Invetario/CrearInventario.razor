@@ -1,0 +1,138 @@
+﻿@inject IModalService Modal
+@inject IJSRuntime js
+@inject OpenInventaryServices  openInventaryService
+@inject BussinessServices bussinessService
+
+@attribute [Authorize]
+
+
+<EditForm Model="inventario" OnValidSubmit="SaveInventario">
+    <DataAnnotationsValidator />
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon"><i class="fa fa-cart-arrow-down  icon-gradient bg-happy-itmeo"></i></div>
+                <div>
+                    @Titulo
+                    <div class="page-title-subheading">Creas todos los invetario que necesites.</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleEmail11" class="">Fecha</label>
+                        <InputDate   format-value="yyyy-MM-dd"class="form-control" placeholder="Selecionar fecha" @bind-Value="inventario.OpenDate" />
+                        <ValidationMessage For="@(()=>inventario.OpenDate)" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="exampleAddress" class="">Negocio</label>
+                        <InputSelect @bind-Value="inventario.BussinessId" class="form-control">
+
+                            <option value="" selected>---------- Select----------</option>
+
+                            @foreach (var neg in listNegocio)
+                            {
+                                <option value="@neg.Id">@neg.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>inventario.BussinessId)" />
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <label for="examplePassword11" class="">Monto Anetrior</label>
+                        <InputNumber class="form-control" placeholder="Codigo del producto" @bind-Value="inventario.OldAmountInventary" />
+                        <ValidationMessage For="@(()=>inventario.OldAmountInventary)" />
+                    </div>
+                </div>
+            
+            </div>
+
+    
+
+            <button type="submit" class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
+            <button class="mt-2 btn btn-danger" @onclick="@(()=> Limpiar() )" style=" float: right;">Limpiar</button>
+
+
+        </div>
+
+    </div>
+</EditForm>
+
+@code {
+    private OpenInventaryViewModel inventario = new OpenInventaryViewModel();
+    bool isBusy = false;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    List<BussinessViewModel> listNegocio = new List<BussinessViewModel>();
+   
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    public string Titulo = "Crear Inventario";
+
+    protected async override Task OnInitializedAsync()
+    {
+        var userState = authenticationState.Result;
+        var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+        bussinessService.AccessToken = AccessToken;
+      
+
+        var result = await bussinessService.GetAllBussinessAsync();
+        listNegocio = result.Records.ToList();
+
+    }
+
+
+    public async Task SaveInventario()
+
+    {
+
+        var userState = authenticationState.Result;
+        var AccessToken = userState.User.FindFirst("AccessToken").Value;
+
+       openInventaryService.AccessToken = AccessToken;
+
+
+        var result = await openInventaryService.OpenInventaryPostAsync(inventario);
+
+        if (result.IsSuccess)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"Guardo con exito"));
+            await js.AvisoAlert("Se guardo el inicio inventario!", "1500", "center", TiposDeAlertas.success);
+        }
+        else
+        {
+            await BlazoredModal.Close(ModalResult.Cancel());
+            await js.MostrarMensajes("Error", "No se pudo guardar el inventario", TiposDeAlertas.error);
+        }
+
+
+    }
+
+    private void Limpiar()
+    {
+        inventario = new OpenInventaryViewModel();
+    }
+
+
+
+
+}
