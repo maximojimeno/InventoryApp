@@ -57,7 +57,7 @@ namespace InventaryApp.Server.Services
             account.Code = newCode;
             account.Name = newName;
             account.Type = newType;
-            account.Type = newBussinessId;
+            account.BussinessId = newBussinessId;
             account.ModifiedDate = DateTime.Now;
 
             await _dbContext.SaveChangesAsync();
@@ -99,7 +99,7 @@ namespace InventaryApp.Server.Services
         }
         public IEnumerable<Account> SearchAccountAsync(string query, int pageSize, int pageNumber, string userId, out int totalAccounts)
         {
-            var allAccounts = _dbContext.Accounts.Where(a => !a.Status && a.UserId == userId && (a.Code.Contains(query) || a.Name.Contains(query) || a.Type.Contains(query)));
+            var allAccounts = _dbContext.Accounts.Where(a => !a.Status && a.UserId == userId && (a.Code.Contains(query) || a.Name.Contains(query) || a.Type.Contains(query)) || a.Bussiness.Name.Contains(query));
 
             totalAccounts = allAccounts.Count();
 

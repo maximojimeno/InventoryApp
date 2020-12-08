@@ -42,8 +42,8 @@ namespace InventaryApp.Shared.Services
             var response = await client.SendFormProtectedAsync<AccountSingleResponse>($"{_baseUrl}/api/account", ActionType.POST,
                 new StringFormKeyValue("Code", model.Code),
                 new StringFormKeyValue("Name", model.Name),
-                new StringFormKeyValue("Name", model.Type),
-                new StringFormKeyValue("Name", model.BussinessId)
+                new StringFormKeyValue("Type", model.Type),
+                new StringFormKeyValue("BussinessId", model.BussinessId)
                 );
             return response.Result;
         }
@@ -55,8 +55,8 @@ namespace InventaryApp.Shared.Services
                 new StringFormKeyValue("Id", model.Id),
                 new StringFormKeyValue("Code", model.Code),
                 new StringFormKeyValue("Name", model.Name),
-                new StringFormKeyValue("Name", model.Type),
-                new StringFormKeyValue("Name", model.BussinessId)
+                new StringFormKeyValue("Type", model.Type),
+                new StringFormKeyValue("BussinessId", model.BussinessId)
             };
 
             var response = await client.SendFormProtectedAsync<AccountSingleResponse>($"{_baseUrl}/api/account", ActionType.PUT, formKeyValues.ToArray());

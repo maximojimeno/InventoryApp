@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="position-relative form-group">
-                        <label for="exampleEmail11" class="">Nombre</label>
+                        <label for="exampleEmail11" class="">Nombre Cuenta</label>
                         <InputText class="form-control" placeholder="Nombre productos" @bind-Value="cuenta.Name" />
                         <ValidationMessage For="@(()=>cuenta.Name)" />
                     </div>
@@ -52,23 +52,18 @@
                         <InputSelect @bind-Value="cuenta.BussinessId" class="form-control">
 
                             <option value="" selected>---------- Select----------</option>
-                        
-        @foreach (var cat in listNegocio)
-        {
-            <option value="@cat.Id">@cat.Name</option>
-        }
-                            
+
+                            @foreach (var cat in listNegocio)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+
                         </InputSelect>
                         <ValidationMessage For="@(()=>cuenta.BussinessId)" />
                     </div>
                 </div>
-              
-            </div>
 
-            <div class="form-row">
-              
-            
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="position-relative form-group">
                         <label for="exampleState" class="">Tipo</label>
                         <InputSelect @bind-Value="cuenta.Type" class="form-control">
@@ -84,6 +79,7 @@
 
             </div>
 
+      
             <button type="submit" class="mt-2 btn btn-primary" style="float: right;margin-left: 12px;">Guardar</button>
             <button class="mt-2 btn btn-danger" @onclick="@(()=> Limpiar() )" style=" float: right;">Limpiar</button>
 
@@ -165,7 +161,7 @@
             else
             {
                 await BlazoredModal.Close(ModalResult.Cancel());
-                await js.MostrarMensajes("Error", "No se pudo guardar el producto", TiposDeAlertas.error);
+                await js.MostrarMensajes("Error", "No se pudo guardar la cuenta", TiposDeAlertas.error);
             }
         }
 
