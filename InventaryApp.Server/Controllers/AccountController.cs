@@ -1,4 +1,4 @@
-﻿using InventaryApp.Server.Entities;
+﻿ using InventaryApp.Server.Entities;
 using InventaryApp.Server.Services;
 using InventaryApp.Shared;
 using InventaryApp.Shared.Account;

@@ -1,5 +1,6 @@
 ﻿using InventaryApp.Server.DataAccess;
 using InventaryApp.Server.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,13 @@ namespace InventaryApp.Server.Services
 {
     public interface IOpenInventaryService
     {
+        Task<IEnumerable<OpenInventary>> GetAllOpenInventaryAsync(string userId);
         Task<OpenInventary> AddOpenInventaryAsync(DateTime openDate, DateTime closeDate, string bussinessId, bool statusInventary, double oldAmountInventary, double actualAmountInventary, string userId);
+        Task<OpenInventary> EditOpenInventaryAsync(string id, DateTime newOpenDate, DateTime newCloseDate, string newBussinessId, bool newStatusInventary, double newOldAmountInventary, double newActualAmountInventary, string userId);
+        Task<OpenInventary> DeleteOpenInventaryAsync(string id, string userId);
+        IEnumerable<OpenInventary> SearchOpenInventaryAsync(string query, int pageSize, int pageNumber, string userId, out int totalOpenInventary);
+        IEnumerable<OpenInventary> GetAllOpenInventaryCollectionAsync(int pageSize, int pageNumber, string userId, out int totalOpenInventary);
+        Task<OpenInventary> GetOpenInventaryById(string id, string userId);
     }
 
     public class OpenInventaryService : IOpenInventaryService
@@ -20,6 +27,13 @@ namespace InventaryApp.Server.Services
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<OpenInventary>> GetAllOpenInventaryAsync(string userId)
+        {
+            var allOpenInventary = await _dbContext.OpenInventaries
+                .Where(p => !p.Status && p.UserId == userId)
+                .ToListAsync();
+            return allOpenInventary;
+        }
         public async Task<OpenInventary> AddOpenInventaryAsync(DateTime openDate, DateTime closeDate, string bussinessId, bool statusInventary, double oldAmountInventary, double actualAmountInventary, string userId)
         {
             var openInventary = new OpenInventary
@@ -72,7 +86,7 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return openInventary;
         }
-        public IEnumerable<OpenInventary> GetAllOpenInventaryAsync(int pageSize, int pageNumber, string userId, out int totalOpenInventary)
+        public IEnumerable<OpenInventary> GetAllOpenInventaryCollectionAsync(int pageSize, int pageNumber, string userId, out int totalOpenInventary)
         {
             var allOpenInventary = _dbContext.OpenInventaries.Where(a => !a.Status && a.UserId == userId);
             totalOpenInventary = allOpenInventary.Count();

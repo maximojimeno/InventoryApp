@@ -6,6 +6,14 @@ namespace InventaryApp.Server.Entities
 {
     public partial class Product : Record
     {
+        public Product()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            Description = string.Empty;
+            Cost = 0;
+            Price = 0;
+        }
         [Required]
         [StringLength(10)]
         public string Code { get; set; }
@@ -15,16 +23,16 @@ namespace InventaryApp.Server.Entities
         [Required]
         [StringLength(50)]
         public string Description { get; set; }
-        [Required]
         public virtual Brand Brand { get; set; }
-        [Required]
         public virtual Category Category { get; set; }
         [Required]
-        public decimal Cost { get; set; }
+        public double Cost { get; set; }
         [Required]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
+        [Required]
         [ForeignKey("Brand")]
         public string BrandId { get; set; }
+        [Required]
         [ForeignKey("Category")]
         public string CategoryId { get; set; }
 

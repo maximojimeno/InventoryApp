@@ -13,8 +13,8 @@ namespace InventaryApp.Server.Services
         Task<Product> GetProductById(string id, string userId);
         IEnumerable<Product> GetAllProductAsync(int pageSize, int pageNumber, string userId, out int totalProduct);
         IEnumerable<Product> SearchProductAsync(string query, int pageSize, int pageNumber, string userId, out int totalProducts);
-        Task<Product> AddProductAsync(string code, string name, string description, string brandId, string categoryId, decimal cost, decimal price, string userId);
-        Task<Product> EditProductAsync(string id, string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, decimal newCost, decimal newPrice, string userId);
+        Task<Product> AddProductAsync(string code, string name, string description, string brandId, string categoryId, double cost, double price, string userId);
+        Task<Product> EditProductAsync(string id, string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, double newCost, double newPrice, string userId);
 
     }   
 
@@ -30,7 +30,7 @@ namespace InventaryApp.Server.Services
         }
 
 
-        public async Task<Product> AddProductAsync(string code, string name, string description, string brandId, string categoryId, decimal cost, decimal price, string userId)
+        public async Task<Product> AddProductAsync(string code, string name, string description, string brandId, string categoryId, double cost, double price, string userId)
         {
             var product = new Product
             {
@@ -67,7 +67,7 @@ namespace InventaryApp.Server.Services
             }
             return product;
         }
-        public async Task<Product> EditProductAsync(string id,string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, decimal newCost, decimal newPrice, string userId)
+        public async Task<Product> EditProductAsync(string id,string newCode, string newName, string newDescription, string newBrandId, string newCategoryId, double newCost, double newPrice, string userId)
         {
             var product = await _dbContext.Products.FindAsync(id);
             

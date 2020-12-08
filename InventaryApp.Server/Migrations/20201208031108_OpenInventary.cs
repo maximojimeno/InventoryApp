@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InventaryApp.Server.Migrations
 {
-    public partial class ProductBrandCategoryUser : Migration
+    public partial class OpenInventary : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,7 +49,7 @@ namespace InventaryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "brands",
+                name: "Brands",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -61,7 +61,29 @@ namespace InventaryApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_brands", x => x.Id);
+                    table.PrimaryKey("PK_Brands", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bussiness",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Owner = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    OwnerPhone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bussiness", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,15 +209,67 @@ namespace InventaryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "products",
+                name: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    BussinessId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Accounts_Bussiness_BussinessId",
+                        column: x => x.BussinessId,
+                        principalTable: "Bussiness",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OpenInventaries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OpenDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CloseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BussinessId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StatusInventary = table.Column<bool>(type: "bit", nullable: false),
+                    OldAmountInventary = table.Column<double>(type: "float", nullable: false),
+                    ActualAmountInventary = table.Column<double>(type: "float", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpenInventaries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OpenInventaries_Bussiness_BussinessId",
+                        column: x => x.BussinessId,
+                        principalTable: "Bussiness",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Cost = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     BrandId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -205,20 +279,25 @@ namespace InventaryApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_products", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_products_brands_BrandId",
+                        name: "FK_Products_Brands_BrandId",
                         column: x => x.BrandId,
-                        principalTable: "brands",
+                        principalTable: "Brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_products_Categories_CategoryId",
+                        name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_BussinessId",
+                table: "Accounts",
+                column: "BussinessId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -260,18 +339,26 @@ namespace InventaryApp.Server.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_products_BrandId",
-                table: "products",
+                name: "IX_OpenInventaries_BussinessId",
+                table: "OpenInventaries",
+                column: "BussinessId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_BrandId",
+                table: "Products",
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_products_CategoryId",
-                table: "products",
+                name: "IX_Products_CategoryId",
+                table: "Products",
                 column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Accounts");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -288,7 +375,10 @@ namespace InventaryApp.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "products");
+                name: "OpenInventaries");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -297,7 +387,10 @@ namespace InventaryApp.Server.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "brands");
+                name: "Bussiness");
+
+            migrationBuilder.DropTable(
+                name: "Brands");
 
             migrationBuilder.DropTable(
                 name: "Categories");

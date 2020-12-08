@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventaryApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201207153639_FixAccountEntity")]
-    partial class FixAccountEntity
+    [Migration("20201208031108_OpenInventary")]
+    partial class OpenInventary
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,8 @@ namespace InventaryApp.Server.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -41,14 +42,16 @@ namespace InventaryApp.Server.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -97,34 +100,41 @@ namespace InventaryApp.Server.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Owner")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("OwnerPhone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -168,6 +178,53 @@ namespace InventaryApp.Server.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("InventaryApp.Server.Entities.OpenInventary", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("ActualAmountInventary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("BussinessId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CloseDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("OldAmountInventary")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("OpenDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StatusInventary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BussinessId");
+
+                    b.ToTable("OpenInventaries");
+                });
+
             modelBuilder.Entity("InventaryApp.Server.Entities.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -186,8 +243,8 @@ namespace InventaryApp.Server.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -205,8 +262,8 @@ namespace InventaryApp.Server.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -440,6 +497,17 @@ namespace InventaryApp.Server.Migrations
                     b.Navigation("Bussiness");
                 });
 
+            modelBuilder.Entity("InventaryApp.Server.Entities.OpenInventary", b =>
+                {
+                    b.HasOne("InventaryApp.Server.Entities.Bussiness", "Bussiness")
+                        .WithMany("OpenInventaries")
+                        .HasForeignKey("BussinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bussiness");
+                });
+
             modelBuilder.Entity("InventaryApp.Server.Entities.Product", b =>
                 {
                     b.HasOne("InventaryApp.Server.Entities.Brand", "Brand")
@@ -518,6 +586,8 @@ namespace InventaryApp.Server.Migrations
             modelBuilder.Entity("InventaryApp.Server.Entities.Bussiness", b =>
                 {
                     b.Navigation("Accounts");
+
+                    b.Navigation("OpenInventaries");
                 });
 
             modelBuilder.Entity("InventaryApp.Server.Entities.Category", b =>

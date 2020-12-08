@@ -24,8 +24,8 @@ namespace InventaryApp.Shared
         [Required]
         public string CategoryId { get; set; }
         [Required]
-        public decimal Cost { get; set; }
+        public double Cost { get; set; }
         [Required]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
     }
 }
