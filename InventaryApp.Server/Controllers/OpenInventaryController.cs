@@ -26,30 +26,6 @@ namespace InventaryApp.Server.Controllers
             _OpenInventoryService = openInventaryService;
         }
 
-        [ProducesResponseType(200, Type = typeof(OperationResponse<OpenInventary>))]
-        [ProducesResponseType(400, Type = typeof(OperationResponse<OpenInventary>))]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
-        {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var openInventary = await _OpenInventoryService.GetOpenInventaryById(id, userId);
-            if (openInventary == null)
-                return BadRequest(new OperationResponse<string>
-                {
-                    IsSuccess = false,
-                    Message = "Invalid operation",
-                });
-
-            return Ok(new OperationResponse<OpenInventary>
-            {
-                Record = openInventary,
-                Message = "Open Inventary retrieved successfully!",
-                IsSuccess = true,
-                OperationDate = DateTime.UtcNow
-            });
-        }
-
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<OpenInventary>))]
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -153,27 +129,6 @@ namespace InventaryApp.Server.Controllers
 
         }
 
-        [ProducesResponseType(200, Type = typeof(OperationResponse<OpenInventary>))]
-        [ProducesResponseType(404)]
-        [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var getOld = await _OpenInventoryService.GetOpenInventaryById(id, userId);
-            if (getOld == null)
-                return NotFound();
-
-            var deletedOpenInventary = await _OpenInventoryService.DeleteOpenInventaryAsync(id, userId);
-
-            return Ok(new OperationResponse<OpenInventary>
-            {
-                IsSuccess = true,
-                Message = $"Open Inventary for {getOld.Bussiness.Name} has been deleted successfully!",
-                Record = deletedOpenInventary
-            });
-
-        }
         [ProducesResponseType(200, Type = typeof(CollectionPagingResponse<OpenInventary>))]
         [HttpGet("query={query}/page={page}")]
         public IActionResult Get(string query, int page)

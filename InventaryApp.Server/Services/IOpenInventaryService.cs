@@ -13,10 +13,8 @@ namespace InventaryApp.Server.Services
         Task<IEnumerable<OpenInventary>> GetAllOpenInventaryAsync(string userId);
         Task<OpenInventary> AddOpenInventaryAsync(DateTime openDate, DateTime closeDate, string bussinessId, bool statusInventary, double oldAmountInventary, double actualAmountInventary, string userId);
         Task<OpenInventary> EditOpenInventaryAsync(string id, DateTime newOpenDate, DateTime newCloseDate, string newBussinessId, bool newStatusInventary, double newOldAmountInventary, double newActualAmountInventary, string userId);
-        Task<OpenInventary> DeleteOpenInventaryAsync(string id, string userId);
         IEnumerable<OpenInventary> SearchOpenInventaryAsync(string query, int pageSize, int pageNumber, string userId, out int totalOpenInventary);
         IEnumerable<OpenInventary> GetAllOpenInventaryCollectionAsync(int pageSize, int pageNumber, string userId, out int totalOpenInventary);
-        Task<OpenInventary> GetOpenInventaryById(string id, string userId);
     }
 
     public class OpenInventaryService : IOpenInventaryService
@@ -67,25 +65,7 @@ namespace InventaryApp.Server.Services
             await _dbContext.SaveChangesAsync();
             return openInventary;
         }
-        public async Task<OpenInventary> GetOpenInventaryById(string id, string userId)
-        {
-            var openInventary = await _dbContext.OpenInventaries.FindAsync(id);
-            if (openInventary.UserId != userId || openInventary.Status)
-                return null;
-            return openInventary;
-        }
-        public async Task<OpenInventary> DeleteOpenInventaryAsync(string id, string userId)
-        {
-            var openInventary = await _dbContext.OpenInventaries.FindAsync(id);
-            if (openInventary.UserId != userId || openInventary.Status)
-                return null;
-
-            openInventary.Status = true;
-            openInventary.ModifiedDate = DateTime.UtcNow;
-
-            await _dbContext.SaveChangesAsync();
-            return openInventary;
-        }
+        
         public IEnumerable<OpenInventary> GetAllOpenInventaryCollectionAsync(int pageSize, int pageNumber, string userId, out int totalOpenInventary)
         {
             var allOpenInventary = _dbContext.OpenInventaries.Where(a => !a.Status && a.UserId == userId);
