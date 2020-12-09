@@ -177,89 +177,6 @@ namespace InventaryApp.Server.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("InventaryApp.Server.Entities.Inventary", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BussinessId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OpenInventaryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BussinessId");
-
-                    b.HasIndex("OpenInventaryId");
-
-                    b.ToTable("inventaries");
-                });
-
-            modelBuilder.Entity("InventaryApp.Server.Entities.InventaryDetails", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Count")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InventaryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InventaryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("InventaryDetails");
-                });
-
             modelBuilder.Entity("InventaryApp.Server.Entities.OpenInventary", b =>
                 {
                     b.Property<string>("Id")
@@ -581,40 +498,6 @@ namespace InventaryApp.Server.Migrations
                     b.Navigation("Bussiness");
                 });
 
-            modelBuilder.Entity("InventaryApp.Server.Entities.Inventary", b =>
-                {
-                    b.HasOne("InventaryApp.Server.Entities.Bussiness", null)
-                        .WithMany("Inventaries")
-                        .HasForeignKey("BussinessId");
-
-                    b.HasOne("InventaryApp.Server.Entities.OpenInventary", "OpenInventary")
-                        .WithMany("Inventaries")
-                        .HasForeignKey("OpenInventaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OpenInventary");
-                });
-
-            modelBuilder.Entity("InventaryApp.Server.Entities.InventaryDetails", b =>
-                {
-                    b.HasOne("InventaryApp.Server.Entities.Inventary", "Inventary")
-                        .WithMany("InventaryDetails")
-                        .HasForeignKey("InventaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InventaryApp.Server.Entities.Product", "product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Inventary");
-
-                    b.Navigation("product");
-                });
-
             modelBuilder.Entity("InventaryApp.Server.Entities.OpenInventary", b =>
                 {
                     b.HasOne("InventaryApp.Server.Entities.Bussiness", "Bussiness")
@@ -705,24 +588,12 @@ namespace InventaryApp.Server.Migrations
                 {
                     b.Navigation("Accounts");
 
-                    b.Navigation("Inventaries");
-
                     b.Navigation("OpenInventaries");
                 });
 
             modelBuilder.Entity("InventaryApp.Server.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("InventaryApp.Server.Entities.Inventary", b =>
-                {
-                    b.Navigation("InventaryDetails");
-                });
-
-            modelBuilder.Entity("InventaryApp.Server.Entities.OpenInventary", b =>
-                {
-                    b.Navigation("Inventaries");
                 });
 #pragma warning restore 612, 618
         }

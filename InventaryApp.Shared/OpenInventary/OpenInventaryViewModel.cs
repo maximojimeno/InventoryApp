@@ -7,6 +7,11 @@ namespace InventaryApp.Shared.OpenInventary
 {
     public class OpenInventaryViewModel 
     {
+        public OpenInventaryViewModel()
+        {
+            OpenDate = DateTime.Now;
+            
+        }
         public string Id { get; set; }
         [Required]
         public DateTime OpenDate { get; set; }

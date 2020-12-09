@@ -17,7 +17,6 @@ namespace InventaryApp.Server.Entities
             StatusInventary = true;
             OldAmountInventary = 0;
             ActualAmountInventary = 0;
-            Inventaries = new List<Inventary>(); 
         }
 
         [Required]
@@ -33,7 +32,6 @@ namespace InventaryApp.Server.Entities
         public double OldAmountInventary { get; set; }
         [Required]
         public double ActualAmountInventary { get; set; }
-        public virtual ICollection<Inventary> Inventaries { get; set; }
 
     }
 }

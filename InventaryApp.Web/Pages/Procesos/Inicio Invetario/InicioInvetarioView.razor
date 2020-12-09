@@ -72,7 +72,7 @@ else
                                     <td class="sorting_1 dtr-control" tabindex="0">@i.OpenDate</td>
                                     <td>@i.BussinessId</td>
                                     <td>@i.OldAmountInventary</td>
-                                    @if (i.StatusInventary)
+                                    @if (!i.StatusInventary)
                                     {
                                         <td>
                                             <div class="alert alert-success fade show" role="alert">
@@ -83,7 +83,7 @@ else
                                     else
                                     {
                                         <td>
-                                            <div class="alert alert-success fade show" role="alert">
+                                            <div class="alert alert-danger fade show" role="alert">
                                                 <span class="alert-link">Inventario Desactivo</span>
                                             </div>
                                         </td>

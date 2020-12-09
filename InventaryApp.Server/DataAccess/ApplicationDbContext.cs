@@ -15,7 +15,6 @@ namespace InventaryApp.Server.DataAccess
         public DbSet<Bussiness> Bussiness { get; set; }
         public DbSet <Account> Accounts { get; set; }
         public DbSet <OpenInventary> OpenInventaries { get; set; }
-        public DbSet <Inventary> inventaries { get; set; }
     }
 
 

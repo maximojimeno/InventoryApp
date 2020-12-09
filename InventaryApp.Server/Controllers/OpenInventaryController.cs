@@ -87,7 +87,7 @@ namespace InventaryApp.Server.Controllers
                 return Ok(new OperationResponse<OpenInventary>
                 {
                     IsSuccess = true,
-                    Message = $"Open Inventary for {addOpenInventary.Bussiness.Name} has been added successfully!",
+                    Message = $"Open Inventary has been added successfully!",
                     Record = addOpenInventary
 
                 });
